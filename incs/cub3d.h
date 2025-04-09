@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/09 13:35:47 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/09 15:45:33 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,22 @@
 # include <fcntl.h>
 # include <string.h>
 # include <sys/time.h>
-# include "../incs/libft.h"
 # include "MLX42/MLX42.h"
+# include "../incs/libft.h"
 
-void	ft_write(char *str);
+typedef struct t_data
+{
+	int			x_pos;
+	int			y_pos;
+	int			map_width;
+	int			map_height;
+	mlx_t		*mlx;
+	mlx_image_t	*roof;
+	mlx_image_t	*floor;
+	mlx_image_t	*north;
+	mlx_image_t	*east;
+	mlx_image_t	*south;
+	mlx_image_t	*west;
+}	t_game;
 
 #endif
