@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/09 15:45:33 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/09 16:19:20 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ typedef struct t_data
 	mlx_image_t	*south;
 	mlx_image_t	*west;
 }	t_game;
+
+void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 #endif
