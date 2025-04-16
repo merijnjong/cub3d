@@ -6,13 +6,13 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/09 16:40:57 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/16 15:21:11 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-char	*file_to_map(char *filename)
+void	file_to_map(t_game *game, char *filename)
 {
 	char	*temp;
 	char	*map;
@@ -22,7 +22,7 @@ char	*file_to_map(char *filename)
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
-		ft_printf("Error\nINVALID MAP\n");
+		ft_printf(MAP_ERROR);
 		exit(EXIT_FAILURE);
 	}
 	while (1)
@@ -34,7 +34,7 @@ char	*file_to_map(char *filename)
 		free(temp);
 	}
 	close(fd);
-	return (map);
+	game->two_d_map = ft_split(map, '\n');
 }
 
 void	init(t_game *game)
@@ -43,6 +43,7 @@ void	init(t_game *game)
 	game->y_pos = 0;
 	game->map_width = 0;
 	game->map_height = 0;
+	game->two_d_map = NULL;
 	game->mlx = mlx_init(1920, 1080, "cub3d", true);
 	game->roof = NULL;
 	game->floor = NULL;
@@ -55,16 +56,14 @@ void	init(t_game *game)
 int	main(int argc, char **argv)
 {
 	t_game	game;
-	char	*map;
 
 	if (!argv[1] || argc > 2)
 	{
-		ft_printf("Error, wrong input\n");
-		ft_printf("Correct input: ./cub3d maps/map.ber\n");
+		ft_printf(INPUT_ERROR);
 		exit(1);
 	}
+	file_to_map(&game, argv[1]);
 	init(&game);
-	map = file_to_map(argv[1]);
 	mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
 	return (0);
 }
