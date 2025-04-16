@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 15:21:11 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/16 18:03:29 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	file_to_map(t_game *game, char *filename)
 	}
 	close(fd);
 	game->two_d_map = ft_split(map, '\n');
+	game->two_d_map_check = ft_split(map, '\n');
+	count_map_dimensions(game);
 }
 
 void	init(t_game *game)
@@ -43,10 +45,10 @@ void	init(t_game *game)
 	game->y_pos = 0;
 	game->map_width = 0;
 	game->map_height = 0;
+	game->invalid_map = 0;
 	game->two_d_map = NULL;
+	game->two_d_map_check = NULL;
 	game->mlx = mlx_init(1920, 1080, "cub3d", true);
-	game->roof = NULL;
-	game->floor = NULL;
 	game->north = NULL;
 	game->east = NULL;
 	game->south = NULL;
@@ -57,7 +59,7 @@ int	main(int argc, char **argv)
 {
 	t_game	game;
 
-	if (!argv[1] || argc > 2)
+	if (!argv[1] || argc > 2 || cub_check(argv[1]))
 	{
 		ft_printf(INPUT_ERROR);
 		exit(1);
@@ -65,5 +67,7 @@ int	main(int argc, char **argv)
 	file_to_map(&game, argv[1]);
 	init(&game);
 	mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
+	mlx_loop(game.mlx);
+	mlx_terminate(game.mlx);
 	return (0);
 }

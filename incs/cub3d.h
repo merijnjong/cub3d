@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 15:23:53 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/16 18:03:23 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,13 @@
 # include "../incs/libft.h"
 
 # define INPUT_ERROR "\033[1;31mError, wrong input\
-	\nCorrect input:./cub3d maps/map.cub\n\033[0m"
+	\nCorrect input: ./cub3d maps/map.cub\n\033[0m"
 # define MAP_ERROR "\033[1;31mError, invalid map\
-	\nCorrect map format: maps/map.cub\n\033[0m"
+	\nMake sure your input is the correct map name\n\033[0m"
+# define FLOOD_FILL_ERROR "\033[1;31mError, invalid map\
+	\nMake sure your map is\n1. Enclosed by walls (1)\
+	\n2. Has at least one player position (N, E, S or W)\
+	\n3. Is completely filled out inside the walls (1) by floors (0)\n\033[0m"
 
 typedef struct t_data
 {
@@ -32,15 +36,19 @@ typedef struct t_data
 	int			y_pos;
 	int			map_width;
 	int			map_height;
+	int			invalid_map;
 	char		**two_d_map;
+	char		**two_d_map_check;
 	mlx_t		*mlx;
-	mlx_image_t	*roof;
-	mlx_image_t	*floor;
 	mlx_image_t	*north;
 	mlx_image_t	*east;
 	mlx_image_t	*south;
 	mlx_image_t	*west;
 }	t_game;
+
+//srcs/parsing
+void	count_map_dimensions(t_game *game);
+int		cub_check(char *line);
 
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
