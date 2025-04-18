@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/09 16:26:49 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 16:12:04 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	ft_hooks(mlx_key_data_t keydata, t_game *game)
 {
 	uint32_t	x_dir;
 	uint32_t	y_dir;
-	uint32_t	pov_dir;
+	// uint32_t	pov_dir;
 
 	x_dir = 0;
 	y_dir = 0;
@@ -34,18 +34,20 @@ void	ft_hooks(mlx_key_data_t keydata, t_game *game)
 		if (keydata.key == MLX_KEY_ESCAPE)
 			exit(EXIT_SUCCESS); //needs a seperate function
 		if (keydata.key == MLX_KEY_W)
-			y_dir = -100;
+			game->y_pos -= 10;
 		if (keydata.key == MLX_KEY_A)
-			x_dir = -100;
+			game->x_pos -= 10;
 		if (keydata.key == MLX_KEY_S)
-			y_dir = 100;
+			game->y_pos += 10;
 		if (keydata.key == MLX_KEY_D)
-			x_dir = 100;
+			game->x_pos += 10;
 		if (keydata.key == MLX_KEY_LEFT)
-			pov_dir = -10;
+			game->dir -= 5;
 		if (keydata.key == MLX_KEY_RIGHT)
-			pov_dir = 10;
-		if (x_dir || y_dir || pov_dir)
-			move_player(game, x_dir, y_dir, pov_dir);
+			game->dir += 5;
+		mlx_delete_image(game->mlx, game->player);
+		draw_player(game, game->x_pos, game->y_pos, 0x00FFFFFF);
+		// if (x_dir || y_dir || pov_dir)
+		// 	move_player(game, x_dir, y_dir, pov_dir);
 	}
 }

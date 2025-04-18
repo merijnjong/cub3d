@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 17:51:24 by dkros            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:52:49 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <math.h>
 # include <string.h>
 # include <sys/time.h>
 # include "MLX42/MLX42.h"
@@ -42,11 +43,14 @@ typedef struct t_data
 {
 	int			x_pos;
 	int			y_pos;
+	int			dir;
 	int			map_width;
 	int			map_height;
 	char		**two_d_map;
 	mlx_t		*mlx;
 	mlx_image_t	*roof;
+	mlx_image_t	*player;
+	mlx_image_t	*gamefield;
 	mlx_image_t *img;
 	t_line_data c;
 	mlx_image_t *floor;
@@ -61,6 +65,10 @@ void		ft_hooks(mlx_key_data_t keydata, t_game *game);
 // void	draw_line(t_game *data, int dx, int sx, int sy);
 mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color);
 void		my_pixel_put(mlx_image_t *img, int x, int y, int color);
+void		draw_player(t_game *game, int x, int y, int color);
+double		draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color);
+void		draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_deg, int color);
+void		draw_game_line(t_game *game, int len, int index);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);

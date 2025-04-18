@@ -1,7 +1,7 @@
 CMakeFiles/mlx42.dir/src/utils/mlx_list.c.o: \
-  /sgoinfre/mjong/myc/cub3d/MLX42/src/utils/mlx_list.c \
-  /sgoinfre/mjong/myc/cub3d/MLX42/include/MLX42/MLX42_Int.h \
-  /sgoinfre/mjong/myc/cub3d/MLX42/include/MLX42/MLX42.h \
+  /sgoinfre/dkros/cub3d/MLX42/src/utils/mlx_list.c \
+  /sgoinfre/dkros/cub3d/MLX42/include/MLX42/MLX42_Int.h \
+  /sgoinfre/dkros/cub3d/MLX42/include/MLX42/MLX42.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/stddef.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/__stddef_max_align_t.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/stdint.h \
@@ -21,10 +21,9 @@ CMakeFiles/mlx42.dir/src/utils/mlx_list.c.o: \
   /usr/include/x86_64-linux-gnu/bits/stdint-intn.h \
   /usr/include/x86_64-linux-gnu/bits/stdint-uintn.h \
   /usr/lib/llvm-12/lib/clang/12.0.1/include/stdbool.h \
-  /sgoinfre/mjong/myc/cub3d/MLX42/include/lodepng/lodepng.h \
-  /usr/include/string.h \
-  /sgoinfre/mjong/myc/cub3d/MLX42/include/glad/glad.h \
-  /sgoinfre/mjong/myc/cub3d/MLX42/include/KHR/khrplatform.h \
+  /sgoinfre/dkros/cub3d/MLX42/include/lodepng/lodepng.h \
+  /usr/include/string.h /sgoinfre/dkros/cub3d/MLX42/include/glad/glad.h \
+  /sgoinfre/dkros/cub3d/MLX42/include/KHR/khrplatform.h \
   /usr/include/GLFW/glfw3.h /usr/include/stdlib.h \
   /usr/include/x86_64-linux-gnu/bits/floatn.h \
   /usr/include/x86_64-linux-gnu/bits/floatn-common.h \
