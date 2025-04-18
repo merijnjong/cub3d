@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 16:47:28 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 17:16:26 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,9 @@ void	load_texture(mlx_t *mlx, mlx_image_t **image_slot, char *path)
 }
 
 void	find_texture(t_game *game, char **split, char *id,
-		char *path_trimmed)
+	char *path_trimmed)
 {
+	printf("id: %s\n", id);
 	if (ft_strncmp(id, "NO", 3) == 0)
 		load_texture(game->mlx, &game->north, path_trimmed);
 	else if (ft_strncmp(id, "SO", 3) == 0)

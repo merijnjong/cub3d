@@ -1,0 +1,26 @@
+De geparsede textures staan in de struct als:
+	mlx_image_t *north;
+	mlx_image_t *south;
+	mlx_image_t *east;
+	mlx_image_t *west;
+Roep de textures op met:
+	game->north;
+	game->south;
+	game->east;
+	game->west;
+
+De geparsede kleuren staan in de struct als:
+	uint32_t floor_colour;
+	uint32_t ceiling_colour;
+Roep de kleuren op met:
+	game->floor_colour;
+	game->ceiling_colour;
+
+De geparsede map staat in de struct als;
+	char **two_d_map;
+Roep hem op met:
+	game->two_d_map;
+
+Texture identifiers worden nog niet goed worden geparsed
+Map is nog niet volledig geparsed met alle checks van dien aangezien floodfill het nog niet doet.
+

@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 16:40:10 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 16:54:24 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	init(t_game *game)
 	game->two_d_map_check = NULL;
 	game->mlx = mlx_init(1920, 1080, "cub3d", true);
 	game->north = NULL;
-	game->east = NULL;
 	game->south = NULL;
+	game->east = NULL;
 	game->west = NULL;
 }
 

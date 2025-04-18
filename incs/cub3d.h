@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 16:40:05 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 16:54:12 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ typedef struct s_game
 	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
 	mlx_image_t	*north;
-	mlx_image_t	*east;
 	mlx_image_t	*south;
+	mlx_image_t	*east;
 	mlx_image_t	*west;
 }	t_game;
 
