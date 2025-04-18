@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:04:32 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 15:05:00 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 14:34:27 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	print_dbl_ptr(char **ptr)
 	i = 0;
 	while (ptr[i] != NULL)
 	{
-		ft_printf("%s\n", ptr[i]);
+		ft_printf("[%s]\n", ptr[i]);
 		i++;
 	}
 }
