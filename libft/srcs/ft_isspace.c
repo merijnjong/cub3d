@@ -6,13 +6,21 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/13 16:43:38 by mjong             #+#    #+#             */
-/*   Updated: 2024/12/20 18:32:05 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 14:58:29 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/libft.h"
 
-int	ft_isspace(int c)
+int	ft_isspacei(int c)
+{
+	if (c == ' ' || c == '\t' || c == '\n'
+		|| c == '\f' || c == '\v' || c == '\r')
+		return (1);
+	return (0);
+}
+
+int	ft_isspacec(char c)
 {
 	if (c == ' ' || c == '\t' || c == '\n'
 		|| c == '\f' || c == '\v' || c == '\r')

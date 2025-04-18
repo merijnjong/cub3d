@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 18:03:23 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 16:40:05 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@
 	\n2. Has at least one player position (N, E, S or W)\
 	\n3. Is completely filled out inside the walls (1) by floors (0)\n\033[0m"
 
-typedef struct t_data
+typedef struct s_game
 {
 	int			x_pos;
 	int			y_pos;
@@ -39,6 +39,8 @@ typedef struct t_data
 	int			invalid_map;
 	char		**two_d_map;
 	char		**two_d_map_check;
+	uint32_t	floor_colour;
+	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
 	mlx_image_t	*north;
 	mlx_image_t	*east;
@@ -47,12 +49,16 @@ typedef struct t_data
 }	t_game;
 
 //srcs/parsing
+void	extract_colour(t_game *game, char *line);
+void	parse_cub_file(t_game *game, char *filename);
 void	count_map_dimensions(t_game *game);
 int		cub_check(char *line);
+void	assign_texture(t_game *game, char *line);
 
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
+void	free_split(char **arr);
 
 #endif

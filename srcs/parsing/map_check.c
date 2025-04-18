@@ -6,11 +6,11 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/16 18:09:43 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/18 16:42:21 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../incs/cub3d.h"
+#include "../../incs/cub3d.h"
 
 void	flood_fill(t_game *game, int x, int y)
 {
@@ -22,7 +22,7 @@ void	flood_fill(t_game *game, int x, int y)
 		return ;
 	}
 	c = game->two_d_map_check[y][x];
-	if (c == '1' || c == 'F' || c == ' ')
+	if (c == '1' || c == 'F' || c == 'P' || c == ' ') //this changes outcome of floodfill somehow
 		return ;
 	if (c != '0' && c != 'N' && c != 'S' && c != 'E' && c != 'W')
 	{
@@ -36,11 +36,39 @@ void	flood_fill(t_game *game, int x, int y)
 	flood_fill(game, x, y - 1);
 }
 
+void	pad_map_lines(char **map, int width)
+{
+	char	*padded;
+	int		len;
+	int		i;
+
+	i = 0;
+	while (map[i])
+	{
+		len = ft_strlen(map[i]);
+		if (len < width)
+		{
+			padded = malloc(width + 1);
+			if (!padded)
+			{
+				ft_printf("Malloc failed in pad_map_lines\n");
+				exit(1);
+			}
+			ft_memcpy(padded, map[i], len);
+			ft_memset(padded + len, 'P', width - len); // Fill with 'P'
+			padded[width] = '\0';
+			free(map[i]);
+			map[i] = padded;
+		}
+		i++;
+	}
+}
+
 void	count_map_dimensions(t_game *game)
 {
-	int	y;
-	int	x;
 	int	curr_len;
+	int	x;
+	int	y;
 
 	y = 0;
 	game->map_width = 0;
@@ -55,26 +83,11 @@ void	count_map_dimensions(t_game *game)
 		y++;
 	}
 	game->map_height = y;
+	pad_map_lines(game->two_d_map_check, game->map_width);
 	flood_fill(game, 1, 1);
 	if (game->invalid_map == 1)
 	{
 		ft_printf(FLOOD_FILL_ERROR);
 		exit(1);
 	}
-}
-
-int	cub_check(char *line)
-{
-	int	len;
-	int	i;
-
-	i = 0;
-	len = ft_strlen(line);
-	if (len < 4)
-		return (1);
-	i = len - 4;
-	if (line[i] != '.' || line[i + 1] != 'c'
-		|| line[i + 2] != 'u' || line[i + 3] != 'b')
-		return (1);
-	return (0);
 }
