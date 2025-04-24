@@ -21,6 +21,5 @@ De geparsede map staat in de struct als;
 Roep hem op met:
 	game->two_d_map;
 
-Texture identifiers worden nog niet goed worden geparsed
-Map is nog niet volledig geparsed met alle checks van dien aangezien floodfill het nog niet doet.
-
+Texture identifiers worden nog niet goed worden geparsed.
+Map wordt nog niet goed gecheckt aangezien floodfill het nog niet doet.

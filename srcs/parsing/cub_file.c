@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:24:30 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 16:50:04 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/24 15:55:40 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,11 @@ void	parse_cub_file(t_game *game, char *filename)
 	char	**lines;
 	char	*map_str;
 	int		i;
+	int		has_texture;
+	int		has_colour;
 
+	has_texture = 0;
+	has_colour = 0;
 	file_content = read_cub_lines(filename);
 	lines = ft_split(file_content, '\n');
 	free(file_content);
@@ -76,19 +80,38 @@ void	parse_cub_file(t_game *game, char *filename)
 	{
 		if (ft_strncmp(lines[i], "NO", 2) == 0 || ft_strncmp(lines[i], "SO", 2) == 0
 			|| ft_strncmp(lines[i], "WE", 2) == 0 || ft_strncmp(lines[i], "EA", 2) == 0)
+		{
 			assign_texture(game, lines[i]);
+			has_texture++;
+		}
 		else if (lines[i][0] == 'F' || lines[i][0] == 'C')
+		{
 			extract_colour(game, lines[i]);
+			has_colour++;
+		}
 		else if (lines[i][0] == '1' || lines[i][0] == '0' || lines[i][0] == ' ')
 			break ;
+		else
+			exit(ft_printf(TEX_ERROR));
 		i++;
+	}
+
+	if (has_texture < 4)
+	{
+		free_split(lines);
+		exit(ft_printf(TEX_ERROR));
+	}
+	if (has_colour < 2)
+	{
+		free_split(lines);
+		exit(ft_printf(COL_ERROR));
 	}
 	map_str = join_lines(lines + i);
 	game->two_d_map = ft_split(map_str, '\n');
 	game->two_d_map_check = ft_split(map_str, '\n');
 	free(map_str);
 	count_map_dimensions(game);
-	free_split(lines);
+	// free_split(lines);
 }
 
 int	cub_check(char *line)
