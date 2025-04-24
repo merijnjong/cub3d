@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 15:27:19 by mjong            ###   ########.fr       */
+/*   Updated: 2025/04/24 16:49:37 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,13 @@ void	flood_fill(t_game *game, int x, int y)
 		return ;
 	}
 	c = game->two_d_map_check[y][x];
-	if (c == '1' || c == 'F' || c == 'P' || c == ' ') //this changes outcome of floodfill somehow
+	if (c == '1' || c == 'F')
 		return ;
+	if (c == 'P' || c == ' ')
+	{
+		game->invalid_map = 1;
+		return ;
+	}
 	if (c != '0' && c != 'N' && c != 'S' && c != 'E' && c != 'W')
 	{
 		game->invalid_map = 1;
@@ -55,7 +60,7 @@ void	pad_map_lines(char **map, int width)
 				exit(1);
 			}
 			ft_memcpy(padded, map[i], len);
-			ft_memset(padded + len, 'P', width - len); // Fill with 'P'
+			ft_memset(padded + len, 'P', width - len);
 			padded[width] = '\0';
 			free(map[i]);
 			map[i] = padded;
@@ -84,6 +89,7 @@ void	count_map_dimensions(t_game *game)
 	}
 	game->map_height = y;
 	pad_map_lines(game->two_d_map_check, game->map_width);
+	print_dbl_ptr(game->two_d_map_check);
 	flood_fill(game, 1, 1);
 	if (game->invalid_map == 1)
 	{
