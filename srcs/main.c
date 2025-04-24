@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 18:05:15 by dkros            ###   ########.fr       */
+/*   Updated: 2025/04/24 18:14:57 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	file_to_map(t_game *game, char *filename)
 
 void	init(t_game *game)
 {
-	game->x_pos = 150;
-	game->y_pos = 150;
-	game->dir = 45;
+	game->x_pos = 100;
+	game->y_pos = 100;
+	game->dir = 180;
 	game->map_width = 0;
 	game->map_height = 0;
 	game->two_d_map = NULL;
@@ -131,44 +131,106 @@ mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
 	return (data->img);
 }
 
-bool is_wall(t_game *game, int px, int py)
+bool in_bounds(t_game *g, int x, int y)
 {
-	int map_x = px / BLOCK_SIZE;
-	int map_y = py / BLOCK_SIZE;
-
-	if (!game->two_d_map[map_y] || !game->two_d_map[map_y][map_x])
-		return true;
-
-	return (game->two_d_map[map_y][map_x] == '1');
+    if (y < 0 || y >= g->map_height) 
+        return false;
+    if (x < 0 || x >= (int)ft_strlen(g->two_d_map[y]))
+        return false;
+    return true;
 }
+
+// Updated is_wall:
+bool is_wall(t_game *g, int px, int py)
+{
+    int map_x = px / BLOCK_SIZE;
+    int map_y = py / BLOCK_SIZE;
+    // treat out-of-bounds as wall
+    if (!in_bounds(g, map_x, map_y)) 
+        return true;
+    return (g->two_d_map[map_y][map_x] == '1');
+}
+
+// bool cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y)
+// {
+// 	double angle_rad = angle_deg * (M_PI / 180.0);
+// 	double step_size = 5.0;
+// 	double current_distance = 0.0;
+
+// 	double ray_x = (double)start_x;
+// 	double ray_y = (double)start_y;
+
+// 	while (current_distance < max_distance)
+// 	{
+// 		ray_x += cos(angle_rad) * step_size;
+// 		ray_y += sin(angle_rad) * step_size;
+// 		current_distance += step_size;
+
+// 		int check_x = (int)ray_x;
+// 		int check_y = (int)ray_y;
+
+// 		if (is_wall(game, check_x, check_y))
+// 		{
+// 			if (wall_hit_x) *wall_hit_x = check_x;
+// 			if (wall_hit_y) *wall_hit_y = check_y;
+// 			return true;
+// 		}
+// 	}
+// 	return false;
+// }
 
 bool cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y)
 {
-	double angle_rad = angle_deg * (M_PI / 180.0);
-	double step_size = 1.0;
-	double current_distance = 0.0;
+	double angle_rad = fmod(angle_deg * (M_PI/180.0), 2*M_PI);
+	if (angle_rad < 0) angle_rad += 2*M_PI;
 
-	double ray_x = (double)start_x;
-	double ray_y = (double)start_y;
+	double dirX =  cos(angle_rad);
+	double dirY =  sin(angle_rad);
 
-	while (current_distance < max_distance)
+	double traveled = 0.0;
+	const double BLOCK = (double)BLOCK_SIZE;
+
+	while (traveled < (double)max_distance)
 	{
-		ray_x += cos(angle_rad) * step_size;
-		ray_y += sin(angle_rad) * step_size;
-		current_distance += step_size;
-
-		int check_x = (int)ray_x;
-		int check_y = (int)ray_y;
-
-		if (is_wall(game, check_x, check_y))
+		if (is_wall(game, start_x, start_y))
 		{
-			if (wall_hit_x) *wall_hit_x = check_x;
-			if (wall_hit_y) *wall_hit_y = check_y;
+			if (wall_hit_x)
+				*wall_hit_x = start_x;
+			if (wall_hit_y)
+				*wall_hit_y = start_y;
 			return true;
 		}
+
+		int modX = start_x % BLOCK_SIZE;  
+		int modY = start_y % BLOCK_SIZE;
+
+		if (modX < 0)
+			modX += BLOCK_SIZE;
+		if (modY < 0)
+			modY += BLOCK_SIZE;
+
+		double distVert  = (dirX > 0) ? (BLOCK - modX) / dirX : (-modX) / dirX;
+		double distHoriz = (dirY > 0) ? (BLOCK - modY) / dirY : (-modY) / dirY;
+
+		double step = (fabs(distVert) < fabs(distHoriz)) ? distVert : distHoriz;
+
+		int deltaX = (int)round(dirX * step);
+		int deltaY = (int)round(dirY * step);
+
+		if (deltaX == 0 && deltaY == 0)
+		{
+			deltaX = (dirX > 0 ? 1 : (dirX < 0 ? -1 : 0));
+			deltaY = (dirY > 0 ? 1 : (dirY < 0 ? -1 : 0));
+		}
+
+		start_x  += deltaX;
+		start_y  += deltaY;
+		traveled += sqrt((double)deltaX*deltaX + (double)deltaY*deltaY);
 	}
+
 	return false;
 }
+
 
 void draw_game_line(t_game *game, int len, int index)
 {
@@ -227,7 +289,7 @@ void draw_player(t_game *game, int x, int y, int color)
 	while (d < 60)
 	{
 		if (cast_ray(game, game->x_pos + player_origin_x, game->y_pos + player_origin_y,
-					(game->dir + d), 250, &wall_hit_x, &wall_hit_y))
+					(game->dir + d), 249, &wall_hit_x, &wall_hit_y))
 		{
 			int local_wall_x = wall_hit_x - game->x_pos;
 			int local_wall_y = wall_hit_y - game->y_pos;
@@ -236,7 +298,7 @@ void draw_player(t_game *game, int x, int y, int color)
 			draw_game_line(game, (int)(len), d);
 		}
 		else
-			draw_line_angle(game->player, player_origin_x, player_origin_y, 250, (game->dir + d), 0xFF0000FF);
+			draw_line_angle(game->player, player_origin_x, player_origin_y, 249, (game->dir + d), 0xFF0000FF);
 		d++;
 	}
 	i = 0;
@@ -265,6 +327,8 @@ int	main(int argc, char **argv)
 	}
 	init(&game);
 	file_to_map(&game, argv[1]);
+	while (game.two_d_map[game.map_height])
+    	game.map_height++;
 	print_dbl_ptr(game.two_d_map);
 
 	int i;

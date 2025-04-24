@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 17:52:49 by dkros            ###   ########.fr       */
+/*   Updated: 2025/04/24 18:13:00 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
 # define BLOCK_SIZE 50
+# define INT_MAX 2147483647
 
 typedef struct s_line_data_t
 {
@@ -69,8 +70,11 @@ void		draw_player(t_game *game, int x, int y, int color);
 double		draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color);
 void		draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_deg, int color);
 void		draw_game_line(t_game *game, int len, int index);
+bool		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
+bool	is_wall(t_game *g, int px, int py);
+bool	in_bounds(t_game *g, int x, int y);
 
 #endif
