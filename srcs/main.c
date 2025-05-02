@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 18:14:57 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:46:58 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,7 @@ void	file_to_map(t_game *game, char *filename)
 	}
 	close(fd);
 	game->two_d_map = ft_split(map, '\n');
+	free(map);
 }
 
 void	init(t_game *game)
@@ -46,6 +47,11 @@ void	init(t_game *game)
 	game->map_height = 0;
 	game->two_d_map = NULL;
 	game->mlx = mlx_init(SCREEN_WIDTH, SCREEN_HEIGHT, "cub3d", false);
+	if (!game->mlx)
+	{
+		ft_printf("Failed to initialize graphics library\n");
+		exit(EXIT_FAILURE);
+	}
 	game->roof = NULL;
 	game->floor = NULL;
 	game->north = NULL;
@@ -236,24 +242,26 @@ void draw_game_line(t_game *game, int len, int index)
 {
 	int i;
 	int j;
+	int color;
 
-	i = 0;
-	j = 0;
-	game->gamefield = mlx_new_image(game->mlx, 1000, 750);
+	color = 0xFFFFFFFF - (500 / len) * 8;
 	if (!game->gamefield)
-		return ;
-	while (i < (len * 20))
+		return;
+
+	int start_y = (750 - len) / 2;
+	if (start_y < 0) start_y = 0;
+	
+	i = 0;
+	while (i < len && (start_y + i) < 750)
 	{
 		j = 0;
-		while (j < 10)
+		while (j < (1000 /60))
 		{
-			my_pixel_put(game->gamefield, (10 * index + j), i, 0xFFFFFFFF);
+			my_pixel_put(game->gamefield, ((1000 /60) * index + j), start_y + i, color);
 			j++;
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->gamefield, 800, 0);
-	return ;
 }
 
 void draw_player(t_game *game, int x, int y, int color)
@@ -263,7 +271,8 @@ void draw_player(t_game *game, int x, int y, int color)
 
 	game->player = mlx_new_image(game->mlx, 500, 500);
 	if (!game->player)
-		return ;
+		return;
+
 	i = 0;
 	while (i < 16)
 	{
@@ -275,45 +284,72 @@ void draw_player(t_game *game, int x, int y, int color)
 		}
 		i++;
 	}
-	int d;
 
-	d = 0;
+	int d = -30;
 	int wall_hit_x;
 	int wall_hit_y;
-	
-	wall_hit_x = 0;
-	wall_hit_y = 0;
 	int player_origin_x = 250;
 	int player_origin_y = 250;
 	
-	while (d < 60)
+	game->gamefield = mlx_new_image(game->mlx, 1000, 750);
+	
+	while (d < 30)
 	{
-		if (cast_ray(game, game->x_pos + player_origin_x, game->y_pos + player_origin_y,
-					(game->dir + d), 249, &wall_hit_x, &wall_hit_y))
+		double ray_angle = fmod((game->dir + d + 360), 360);
+
+		if (cast_ray(game, game->x_pos + player_origin_x, game->y_pos + player_origin_y, ray_angle, 500, &wall_hit_x, &wall_hit_y))
 		{
 			int local_wall_x = wall_hit_x - game->x_pos;
 			int local_wall_y = wall_hit_y - game->y_pos;
 
 			double len = draw_line(game->player, player_origin_x, player_origin_y, local_wall_x, local_wall_y, 0xFF0000FF);
-			draw_game_line(game, (int)(len), d);
+
+			double corrected_len = len * cos(d * M_PI / 180.0);
+			int wall_height = (int)((BLOCK_SIZE * 750) / corrected_len);
+			
+			draw_game_line(game, wall_height, d + 30);
 		}
 		else
-			draw_line_angle(game->player, player_origin_x, player_origin_y, 249, (game->dir + d), 0xFF0000FF);
+			draw_line_angle(game->player, player_origin_x, player_origin_y, 249, ray_angle, 0xFF0000FF);
 		d++;
 	}
+
+	mlx_image_to_window(game->mlx, game->gamefield, 800, 0);
+	mlx_image_to_window(game->mlx, game->player, x, y);
+}
+
+void draw_background(t_game *game, int color_1, int color_2)
+{
+	int i, j;
+
 	i = 0;
-	while (i < 16)
+	j = 0;
+	game->background = mlx_new_image(game->mlx, 1000, 750);
+	if (!game->background)
+		return;
+	
+	while (i < 375)
 	{
 		j = 0;
-		while (j < 16)
+		while (j < 1000)
 		{
-			my_pixel_put(game->player, (242 + j), (242 + i), color);
+			my_pixel_put(game->background, j, i, color_1);
 			j++;
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->player, x, y);
-	return ;
+
+	while (i < 750)
+	{
+		j = 0;
+		while (j < 1000)
+		{
+			my_pixel_put(game->background, j, i, color_2);
+			j++;
+		}
+		i++;
+	}
+	mlx_image_to_window(game->mlx, game->background, 800, 0);
 }
 
 int	main(int argc, char **argv)
@@ -335,7 +371,8 @@ int	main(int argc, char **argv)
 	int j;
 
 	i = 0;
-
+	
+	draw_background(&game, 0xFF1166FF, 0x55FF55FF);
 	while (game.two_d_map && game.two_d_map[i])
 	{
 		j = 0;

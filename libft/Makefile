@@ -6,6 +6,7 @@ SRCS	:= $(shell find ./srcs -name "*.c")
 OBJS	:= ${SRCS:.c=.o}
 AR      := ar
 ARFLAGS := rcs
+RANLIB  = ranlib
 
 all: $(NAME)
 
@@ -13,7 +14,8 @@ all: $(NAME)
 	@$(CC) $(CFLAGS) -o $@ -c $< $(INCS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
-	@$(AR) $(ARFLAGS) $(NAME) $(OBJS) -o $(NAME)
+	$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	$(RANLIB) $(NAME)
 
 clean:
 	@rm -rf $(OBJS)

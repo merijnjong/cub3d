@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 18:13:00 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/02 15:29:02 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ typedef struct t_data
 	mlx_image_t	*roof;
 	mlx_image_t	*player;
 	mlx_image_t	*gamefield;
+	mlx_image_t	*background;
 	mlx_image_t *img;
 	t_line_data c;
 	mlx_image_t *floor;
