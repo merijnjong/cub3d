@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/02 15:46:58 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:40:49 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,49 +146,21 @@ bool in_bounds(t_game *g, int x, int y)
     return true;
 }
 
-// Updated is_wall:
 bool is_wall(t_game *g, int px, int py)
 {
     int map_x = px / BLOCK_SIZE;
     int map_y = py / BLOCK_SIZE;
-    // treat out-of-bounds as wall
+
     if (!in_bounds(g, map_x, map_y)) 
         return true;
     return (g->two_d_map[map_y][map_x] == '1');
 }
 
-// bool cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y)
-// {
-// 	double angle_rad = angle_deg * (M_PI / 180.0);
-// 	double step_size = 5.0;
-// 	double current_distance = 0.0;
-
-// 	double ray_x = (double)start_x;
-// 	double ray_y = (double)start_y;
-
-// 	while (current_distance < max_distance)
-// 	{
-// 		ray_x += cos(angle_rad) * step_size;
-// 		ray_y += sin(angle_rad) * step_size;
-// 		current_distance += step_size;
-
-// 		int check_x = (int)ray_x;
-// 		int check_y = (int)ray_y;
-
-// 		if (is_wall(game, check_x, check_y))
-// 		{
-// 			if (wall_hit_x) *wall_hit_x = check_x;
-// 			if (wall_hit_y) *wall_hit_y = check_y;
-// 			return true;
-// 		}
-// 	}
-// 	return false;
-// }
-
 bool cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y)
 {
 	double angle_rad = fmod(angle_deg * (M_PI/180.0), 2*M_PI);
-	if (angle_rad < 0) angle_rad += 2*M_PI;
+	if (angle_rad < 0)
+		angle_rad += 2*M_PI;
 
 	double dirX =  cos(angle_rad);
 	double dirY =  sin(angle_rad);
@@ -248,16 +220,16 @@ void draw_game_line(t_game *game, int len, int index)
 	if (!game->gamefield)
 		return;
 
-	int start_y = (750 - len) / 2;
+	int start_y = (SCREEN_HEIGHT - len) / 2;
 	if (start_y < 0) start_y = 0;
 	
 	i = 0;
-	while (i < len && (start_y + i) < 750)
+	while (i < len && (start_y + i) < SCREEN_HEIGHT)
 	{
 		j = 0;
-		while (j < (1000 /60))
+		while (j < (SCREEN_WIDTH /60))
 		{
-			my_pixel_put(game->gamefield, ((1000 /60) * index + j), start_y + i, color);
+			my_pixel_put(game->gamefield, ((SCREEN_WIDTH /60) * index + j), start_y + i, color);
 			j++;
 		}
 		i++;
@@ -291,7 +263,7 @@ void draw_player(t_game *game, int x, int y, int color)
 	int player_origin_x = 250;
 	int player_origin_y = 250;
 	
-	game->gamefield = mlx_new_image(game->mlx, 1000, 750);
+	game->gamefield = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	
 	while (d < 30)
 	{
@@ -305,7 +277,7 @@ void draw_player(t_game *game, int x, int y, int color)
 			double len = draw_line(game->player, player_origin_x, player_origin_y, local_wall_x, local_wall_y, 0xFF0000FF);
 
 			double corrected_len = len * cos(d * M_PI / 180.0);
-			int wall_height = (int)((BLOCK_SIZE * 750) / corrected_len);
+			int wall_height = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / corrected_len);
 			
 			draw_game_line(game, wall_height, d + 30);
 		}
@@ -314,7 +286,7 @@ void draw_player(t_game *game, int x, int y, int color)
 		d++;
 	}
 
-	mlx_image_to_window(game->mlx, game->gamefield, 800, 0);
+	mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
 	mlx_image_to_window(game->mlx, game->player, x, y);
 }
 
@@ -324,14 +296,14 @@ void draw_background(t_game *game, int color_1, int color_2)
 
 	i = 0;
 	j = 0;
-	game->background = mlx_new_image(game->mlx, 1000, 750);
+	game->background = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!game->background)
 		return;
 	
-	while (i < 375)
+	while (i < (SCREEN_HEIGHT / 2))
 	{
 		j = 0;
-		while (j < 1000)
+		while (j < SCREEN_WIDTH)
 		{
 			my_pixel_put(game->background, j, i, color_1);
 			j++;
@@ -339,17 +311,17 @@ void draw_background(t_game *game, int color_1, int color_2)
 		i++;
 	}
 
-	while (i < 750)
+	while (i < SCREEN_HEIGHT)
 	{
 		j = 0;
-		while (j < 1000)
+		while (j < SCREEN_WIDTH)
 		{
 			my_pixel_put(game->background, j, i, color_2);
 			j++;
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->background, 800, 0);
+	mlx_image_to_window(game->mlx, game->background, 0, 0);
 }
 
 int	main(int argc, char **argv)
@@ -372,7 +344,7 @@ int	main(int argc, char **argv)
 
 	i = 0;
 	
-	draw_background(&game, 0xFF1166FF, 0x55FF55FF);
+	draw_background(&game, 0x87CEEBFF, 0x777777FF);
 	while (game.two_d_map && game.two_d_map[i])
 	{
 		j = 0;

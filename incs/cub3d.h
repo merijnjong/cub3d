@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/02 15:29:02 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/07 15:37:17 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@
 	\nCorrect map format: maps/map.cub\n\033[0m"
 # define SCREEN_WIDTH 1920
 # define SCREEN_HEIGHT 1080
-# define BLOCK_SIZE 50
+# define BLOCK_SIZE 20
 # define INT_MAX 2147483647
 
 typedef struct s_line_data_t
@@ -72,6 +72,10 @@ double		draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color);
 void		draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_deg, int color);
 void		draw_game_line(t_game *game, int len, int index);
 bool		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y);
+void		move_right(t_game *game, double angle_rad);
+void		move_left(t_game *game, double angle_rad);
+void		move_forward(t_game *game, double angle_rad);
+void		move_backwards(t_game *game, double angle_rad);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
