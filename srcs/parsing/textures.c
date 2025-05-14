@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 16:30:27 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:19:33 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,23 @@ void	find_texture(t_game *game, char **split, char *id,
 	}
 }
 
+int	validate_texture_line_format(char **split, char *line)
+{
+	int	count;
+
+	count = 0;
+	while (split[count])
+		count++;
+	if (count != 2)
+	{
+		ft_printf("\033[1;31mError: invalid texture line format:\
+ \"%s\"\n\033[0m", line);
+		return (0);
+	}
+	return (1);
+}
+
+
 void	assign_texture(t_game *game, char *line)
 {
 	char	**split;
@@ -60,7 +77,11 @@ void	assign_texture(t_game *game, char *line)
 	split = ft_split(line, ' ');
 	if (!split || !split[0] || !split[1])
 	{
-		ft_printf("Error: invalid texture line\n");
+		free_split(split);
+		exit(ft_printf(TEX_ERROR));
+	}
+	if (!validate_texture_line_format(split, line))
+	{
 		free_split(split);
 		exit(1);
 	}
@@ -68,9 +89,8 @@ void	assign_texture(t_game *game, char *line)
 	path_trimmed = ft_strtrim(split[1], "\n");
 	if (!path_trimmed)
 	{
-		ft_printf("Error: failed to trim path\n");
 		free_split(split);
-		exit(1);
+		exit(ft_printf("Error: failed to trim path\n"));
 	}
 	find_texture(game, split, id, path_trimmed);
 	free(path_trimmed);

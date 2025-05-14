@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 16:49:37 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/14 16:23:46 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	count_map_dimensions(t_game *game)
 	}
 	game->map_height = y;
 	pad_map_lines(game->two_d_map_check, game->map_width);
-	print_dbl_ptr(game->two_d_map_check);
+	find_and_validate_player(game);
 	flood_fill(game, 1, 1);
 	if (game->invalid_map == 1)
 	{

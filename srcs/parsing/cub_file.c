@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:24:30 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 18:20:50 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:01:42 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,6 @@ char	*join_lines(char **lines)
 		i++;
 	}
 	return (result);
-}
-
-char	*read_cub_lines(char *filename)
-{
-	int		fd;
-	char	*line;
-	char	*content;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		ft_printf(MAP_ERROR);
-		exit(1);
-	}
-	content = NULL;
-	while (1)
-	{
-		line = get_next_line(fd);
-		if (!line)
-			break ;
-		content = ft_strjoin2(content, line);
-		free(line);
-	}
-	close(fd);
-	return (content);
 }
 
 int	tex_col_check(t_game *game, char **lines)
@@ -86,44 +61,61 @@ int	tex_col_check(t_game *game, char **lines)
 	return (i);
 }
 
+char	*read_cub_lines(char *filename)
+{
+	int		fd;
+	char	*line;
+	char	*content;
+
+	fd = open(filename, O_RDONLY);
+	if (fd < 0)
+	{
+		ft_printf(MAP_ERROR);
+		exit(1);
+	}
+	content = NULL;
+	while (1)
+	{
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		content = ft_strjoin2(content, line);
+		free(line);
+	}
+	close(fd);
+	return (content);
+}
+
 void	parse_cub_file(t_game *game, char *filename)
 {
 	char	**lines;
 	char	*file_content;
+	char	*map_start;
 	char	*map_str;
 	int		i;
 
 	file_content = read_cub_lines(filename);
 	lines = ft_split(file_content, '\n');
-	free(file_content);
 	if (!lines)
 		exit(ft_printf("Error: failed to split .cub content\n"));
 	i = tex_col_check(game, lines);
 	if (game->tex_col_check < 6)
 	{
 		free_split(lines);
+		free(file_content);
 		exit(ft_printf(TEX_COL_ERROR));
+	}
+	map_start = ft_strnstr(file_content, lines[i], ft_strlen(file_content));
+	if (has_internal_empty_line(map_start))
+	{
+		free_split(lines);
+		free(file_content);
+		exit(ft_printf(MAP_NL_ERROR));
 	}
 	map_str = join_lines(lines + i);
 	game->two_d_map = ft_split(map_str, '\n');
 	game->two_d_map_check = ft_split(map_str, '\n');
 	free(map_str);
+	free(file_content);
 	count_map_dimensions(game);
-	// free_split(lines);
-}
-
-int	cub_check(char *line)
-{
-	int	len;
-	int	i;
-
-	i = 0;
-	len = ft_strlen(line);
-	if (len < 4)
-		return (1);
-	i = len - 4;
-	if (line[i] != '.' || line[i + 1] != 'c'
-		|| line[i + 2] != 'u' || line[i + 3] != 'b')
-		return (1);
-	return (0);
 }
