@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/07 15:22:57 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/07 16:09:59 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void exit_game(t_game *game)
 {
 	mlx_terminate(game->mlx);
+	ft_free(game->two_d_map);
 	exit(EXIT_SUCCESS);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:54 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/09 13:22:56 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/07 16:10:26 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_qsort(char **array, int low, int high, int (*cmp)(const char *,
 				const char *));
 char	**ft_split(char const *s, char c);
+void	ft_free(char **str);
 char	*ft_strchr(const char *s, int c);
 int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strcpy(char *dest, const char *src);

@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/07 15:40:49 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:22:40 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	init(t_game *game)
 {
 	game->x_pos = 100;
 	game->y_pos = 100;
-	game->dir = 180;
+	game->dir = 270;
 	game->map_width = 0;
 	game->map_height = 0;
 	game->two_d_map = NULL;
@@ -77,23 +77,31 @@ double draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color)
 	int err = dx - dy;
 	int e2;
 
-	while (1)
-	{
-		my_pixel_put(img, x1, y1, color);
-		if (x1 == x2 && y1 == y2)
-			break;
-		e2 = 2 * err;
-		if (e2 > -dy)
-		{
-			err -= dy;
-			x1 += sx;
-		}
-		if (e2 < dx)
-		{
-			err += dx;
-			y1 += sy;
-		}
-	}
+	(void)(color);
+	(void)(img);
+	(void)(sy);
+	(void)(sx);
+	(void)(err);
+	(void)(e2);
+
+
+	// while (1)
+	// {
+	// 	// my_pixel_put(img, x1, y1, color);
+	// 	if (x1 == x2 && y1 == y2)
+	// 		break;
+	// 	e2 = 2 * err;
+	// 	if (e2 > -dy)
+	// 	{
+	// 		err -= dy;
+	// 		x1 += sx;
+	// 	}
+	// 	if (e2 < dx)
+	// 	{
+	// 		err += dx;
+	// 		y1 += sy;
+	// 	}
+	// }
 	double len = sqrt((double)(pow(dx, 2) + pow(dy, 2)));
 	return (len);
 }
@@ -156,133 +164,172 @@ bool is_wall(t_game *g, int px, int py)
     return (g->two_d_map[map_y][map_x] == '1');
 }
 
-bool cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y)
+double cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, bool *hit_vertical)
 {
-	double angle_rad = fmod(angle_deg * (M_PI/180.0), 2*M_PI);
-	if (angle_rad < 0)
-		angle_rad += 2*M_PI;
-
-	double dirX =  cos(angle_rad);
-	double dirY =  sin(angle_rad);
-
-	double traveled = 0.0;
-	const double BLOCK = (double)BLOCK_SIZE;
-
-	while (traveled < (double)max_distance)
-	{
-		if (is_wall(game, start_x, start_y))
-		{
-			if (wall_hit_x)
-				*wall_hit_x = start_x;
-			if (wall_hit_y)
-				*wall_hit_y = start_y;
-			return true;
-		}
-
-		int modX = start_x % BLOCK_SIZE;  
-		int modY = start_y % BLOCK_SIZE;
-
-		if (modX < 0)
-			modX += BLOCK_SIZE;
-		if (modY < 0)
-			modY += BLOCK_SIZE;
-
-		double distVert  = (dirX > 0) ? (BLOCK - modX) / dirX : (-modX) / dirX;
-		double distHoriz = (dirY > 0) ? (BLOCK - modY) / dirY : (-modY) / dirY;
-
-		double step = (fabs(distVert) < fabs(distHoriz)) ? distVert : distHoriz;
-
-		int deltaX = (int)round(dirX * step);
-		int deltaY = (int)round(dirY * step);
-
-		if (deltaX == 0 && deltaY == 0)
-		{
-			deltaX = (dirX > 0 ? 1 : (dirX < 0 ? -1 : 0));
-			deltaY = (dirY > 0 ? 1 : (dirY < 0 ? -1 : 0));
-		}
-
-		start_x  += deltaX;
-		start_y  += deltaY;
-		traveled += sqrt((double)deltaX*deltaX + (double)deltaY*deltaY);
-	}
-
-	return false;
-}
-
-
-void draw_game_line(t_game *game, int len, int index)
-{
-	int i;
-	int j;
-	int color;
-
-	color = 0xFFFFFFFF - (500 / len) * 8;
-	if (!game->gamefield)
-		return;
-
-	int start_y = (SCREEN_HEIGHT - len) / 2;
-	if (start_y < 0) start_y = 0;
+	double rayAngle = fmod(angle_deg * (M_PI/180.0), 2*M_PI);
+    if (rayAngle < 0)
+		rayAngle += 2*M_PI;
 	
-	i = 0;
-	while (i < len && (start_y + i) < SCREEN_HEIGHT)
+    double rayDirX = cos(rayAngle);
+    double rayDirY = sin(rayAngle);
+
+    int mapX = start_x / BLOCK_SIZE;
+    int mapY = start_y / BLOCK_SIZE;
+
+    double deltaDistX = fabs(1.0 / rayDirX) * BLOCK_SIZE;
+    double deltaDistY = fabs(1.0 / rayDirY) * BLOCK_SIZE;
+
+    int stepX, stepY;
+    double sideDistX, sideDistY;
+    if (rayDirX < 0)
+    {
+        stepX = -1;
+        sideDistX = ((start_x / (double)BLOCK_SIZE) - mapX) * deltaDistX;
+    }
+    else
+    {
+        stepX = +1;
+        sideDistX = (mapX + 1.0 - (start_x / (double)BLOCK_SIZE)) * deltaDistX;
+    }
+    if (rayDirY < 0)
+    {
+        stepY = -1;
+        sideDistY = ((start_y / (double)BLOCK_SIZE) - mapY) * deltaDistY;
+    }
+    else
+    {
+        stepY = +1;
+        sideDistY = (mapY + 1.0 - (start_y / (double)BLOCK_SIZE)) * deltaDistY;
+    }
+
+    bool side;
+    while (1)
+    {
+        if (sideDistX < sideDistY)
+        {
+            sideDistX += deltaDistX;
+            mapX    += stepX;
+            side    = true;
+        }
+        else
+        {
+            sideDistY += deltaDistY;
+            mapY    += stepY;
+            side    = false;
+        }
+
+        if (!in_bounds(game, mapX, mapY) || game->two_d_map[mapY][mapX] == '1')
+            break;
+    }
+
+    double perpDist = side
+        ? (sideDistX - deltaDistX)
+        : (sideDistY - deltaDistY);
+
+    if (perpDist > (double)max_distance)
+        return -1.0;
+
+    if (hit_vertical)
+        *hit_vertical = side;
+    return perpDist;
+}
+
+int get_color_from_distance(int len, int color, bool vertical)
+{
+	int red;
+	int green;
+	int blue;
+	int new_color;
+	double shade;
+
+	red = (color >> 24) & 0xFF;
+	green = (color >> 16) & 0xFF;
+	blue = (color >> 8) & 0xFF;
+
+	shade = 1.0 - ((500.0 / len) * 0.03);
+
+	if (shade < 0.0)
+		shade = 0.0;
+	if (shade > 1.0)
+		shade = 1.0;
+
+	if (vertical)
+        shade *= 0.9;
+
+	red = (int)(red * shade);
+	green = (int)(red * shade);
+	blue = (int)(red * shade);
+
+	new_color = (red << 24) | (green << 16) | (blue << 8) | 0xFF;
+	return (new_color);
+}
+
+void draw_game_line(t_game *game, int wall_height, int x, bool hit_vertical)
+{
+	int y;
+	int color;
+    int mid    = SCREEN_HEIGHT / 2;
+    int halfH  = wall_height / 2;
+    int top    = mid - halfH;
+    int bottom = top + wall_height;
+
+    if (top < 0)
+		top = 0;
+    if (bottom > SCREEN_HEIGHT)
+		bottom = SCREEN_HEIGHT;
+
+	color = get_color_from_distance(wall_height, 0xFFFFFFFF, hit_vertical);
+
+	y = top;
+	while (y < bottom)
 	{
-		j = 0;
-		while (j < (SCREEN_WIDTH /60))
-		{
-			my_pixel_put(game->gamefield, ((SCREEN_WIDTH /60) * index + j), start_y + i, color);
-			j++;
-		}
-		i++;
+		my_pixel_put(game->gamefield, x, y, color);
+		y++;
 	}
 }
+
 
 void draw_player(t_game *game, int x, int y, int color)
 {
 	int i;
 	int j;
 
-	game->player = mlx_new_image(game->mlx, 500, 500);
+	game->player = mlx_new_image(game->mlx, 10, 10);
 	if (!game->player)
 		return;
 
 	i = 0;
-	while (i < 16)
+	while (i < 10)
 	{
 		j = 0;
-		while (j < 16)
+		while (j < 10)
 		{
-			my_pixel_put(game->player, (242 + j), (242 + i), color);
+			my_pixel_put(game->player, (0 + j), (0 + i), color);
 			j++;
 		}
 		i++;
 	}
 
-	int d = -30;
-	int wall_hit_x;
-	int wall_hit_y;
-	int player_origin_x = 250;
-	int player_origin_y = 250;
+	int d = 0;
 	
 	game->gamefield = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	
-	while (d < 30)
+    double half_fov = 60.0 * 0.5;
+    double angle_start = game->dir - half_fov;
+    double delta_angle = 60.0 / (double)SCREEN_WIDTH;
+	
+	while (d < SCREEN_WIDTH)
 	{
-		double ray_angle = fmod((game->dir + d + 360), 360);
+		double ray_angle = angle_start + d * delta_angle;
+        ray_angle = fmod(ray_angle + 360.0, 360.0);
 
-		if (cast_ray(game, game->x_pos + player_origin_x, game->y_pos + player_origin_y, ray_angle, 500, &wall_hit_x, &wall_hit_y))
-		{
-			int local_wall_x = wall_hit_x - game->x_pos;
-			int local_wall_y = wall_hit_y - game->y_pos;
-
-			double len = draw_line(game->player, player_origin_x, player_origin_y, local_wall_x, local_wall_y, 0xFF0000FF);
-
-			double corrected_len = len * cos(d * M_PI / 180.0);
-			int wall_height = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / corrected_len);
-			
-			draw_game_line(game, wall_height, d + 30);
-		}
-		else
-			draw_line_angle(game->player, player_origin_x, player_origin_y, 249, ray_angle, 0xFF0000FF);
+        bool was_vertical;
+        double perpDist = cast_ray(game, game->x_pos, game->y_pos, ray_angle, 500, &was_vertical);
+        if (perpDist > 0.0)
+        {
+            int wall_h = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / perpDist);
+            draw_game_line(game, wall_h, d, was_vertical);
+        }
 		d++;
 	}
 
@@ -299,7 +346,7 @@ void draw_background(t_game *game, int color_1, int color_2)
 	game->background = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	if (!game->background)
 		return;
-	
+
 	while (i < (SCREEN_HEIGHT / 2))
 	{
 		j = 0;
@@ -322,6 +369,32 @@ void draw_background(t_game *game, int color_1, int color_2)
 		i++;
 	}
 	mlx_image_to_window(game->mlx, game->background, 0, 0);
+}
+
+bool is_alpha(char c)
+{
+	if ((c >= 97 && c <= 122) || (c >= 65 && c <= 90))
+		return true;
+	return false;
+}
+
+void set_player_position(t_game *game, char c, int i, int j)
+{
+	if (c == 'N')
+		game->dir = 270;
+	else if (c == 'S')
+		game->dir = 90;
+	else if (c == 'W')
+		game->dir = 180;
+	else if (c == 'E')
+		game->dir = 0;
+	else
+	{
+		printf("Invalid character found\n");
+		exit_game(game);
+	}
+	game->x_pos = i * BLOCK_SIZE;
+	game->y_pos = j * BLOCK_SIZE;
 }
 
 int	main(int argc, char **argv)
@@ -356,7 +429,13 @@ int	main(int argc, char **argv)
 			else if (game.two_d_map[i][j] == '2') {
 				draw_square(&game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFF0000FF);
 			}
-			else {
+			else if (is_alpha(game.two_d_map[i][j]))
+			{
+				set_player_position(&game, game.two_d_map[i][j], i, j);
+				draw_square(&game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
+			}
+			else
+			{
 				draw_square(&game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
 			}
 			j++;

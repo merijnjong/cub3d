@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/07 15:37:17 by dkros            ###   ########.fr       */
+/*   Updated: 2025/05/14 18:24:26 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@
 	\nCorrect input:./cub3d maps/map.cub\n\033[0m"
 # define MAP_ERROR "\033[1;31mError, invalid map\
 	\nCorrect map format: maps/map.cub\n\033[0m"
-# define SCREEN_WIDTH 1920
-# define SCREEN_HEIGHT 1080
+# define SCREEN_WIDTH 1600
+# define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
 # define INT_MAX 2147483647
 
@@ -51,7 +51,8 @@ typedef struct t_data
 	mlx_t		*mlx;
 	mlx_image_t	*roof;
 	mlx_image_t	*player;
-	mlx_image_t	*gamefield;
+	mlx_image_t *fov;
+	mlx_image_t *gamefield;
 	mlx_image_t	*background;
 	mlx_image_t *img;
 	t_line_data c;
@@ -70,12 +71,14 @@ void		my_pixel_put(mlx_image_t *img, int x, int y, int color);
 void		draw_player(t_game *game, int x, int y, int color);
 double		draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color);
 void		draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_deg, int color);
-void		draw_game_line(t_game *game, int len, int index);
-bool		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, int *wall_hit_x, int *wall_hit_y);
+void		draw_game_line(t_game *game, int wall_height, int x, bool hit_vertical);
+double		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, bool *hit_vertical);
 void		move_right(t_game *game, double angle_rad);
 void		move_left(t_game *game, double angle_rad);
 void		move_forward(t_game *game, double angle_rad);
 void		move_backwards(t_game *game, double angle_rad);
+void		exit_game(t_game *game);
+bool		is_aplha(char c);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
