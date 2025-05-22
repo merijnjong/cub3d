@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/24 18:07:44 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/22 15:50:00 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@ void	init(t_game *game)
 	game->invalid_map = 0;
 	game->two_d_map = NULL;
 	game->two_d_map_check = NULL;
+	game->floor_colour = 0;
+	game->ceiling_colour = 0;
 	game->mlx = mlx_init(1920, 1080, "cub3d", true);
 	game->north = NULL;
 	game->south = NULL;

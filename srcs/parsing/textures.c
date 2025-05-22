@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/14 18:19:33 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/22 17:25:10 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,6 @@ int	validate_texture_line_format(char **split, char *line)
 	}
 	return (1);
 }
-
 
 void	assign_texture(t_game *game, char *line)
 {

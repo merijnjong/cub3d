@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:09:09 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/14 18:01:57 by mjong            ###   ########.fr       */
+/*   Updated: 2025/05/22 17:25:21 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@ int	has_internal_empty_line(char *str)
 	i = 0;
 	while (str[i] == '\n')
 		i++;
-
 	while (str[i])
 	{
 		line_empty = 1;
