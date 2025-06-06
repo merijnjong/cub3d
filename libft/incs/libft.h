@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:54 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 15:35:10 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/06 14:53:07 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ char	*get_next_line(int fd);
 char	*ft_strjoin2(char *s1, char *s2);
 int		ft_strlen2(const char *str);
 char	*ft_strchr2(char *s, int c);
+void	ft_free(char **str);
 char	*ft_free2(char **str);
 int		ft_printf(const char *s, ...);
 int		ft_printc(char c);

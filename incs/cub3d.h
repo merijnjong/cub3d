@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/14 16:32:31 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/06 14:53:55 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <fcntl.h>
+# include <math.h>
 # include <string.h>
 # include <sys/time.h>
 # include "MLX42/MLX42.h"
@@ -41,20 +42,41 @@
 (NO, SO, WE, EA)\n\033[0m"
 # define COL_ERROR "\033[1;31mError: Missing colours\
 	\nMake sure your .cub file has all the required colours (F, C)\n\033[0m"
+# define SCREEN_WIDTH 1600
+# define SCREEN_HEIGHT 1000
+# define BLOCK_SIZE 20
+# define INT_MAX 2147483647
+
+typedef struct s_line_data_t
+{
+    int x1;
+    int x2;
+    int y1;
+    int y2;
+    int dy;
+}   t_line_data;
 
 typedef struct s_game
 {
 	int			x_pos;
 	int			y_pos;
+	int         dir;
 	int			map_width;
 	int			map_height;
 	int			tex_col_check;
 	int			invalid_map;
 	char		**two_d_map;
 	char		**two_d_map_check;
+    t_line_data c;
 	uint32_t	floor_colour;
 	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
+	mlx_image_t *roof;
+    mlx_image_t *player;
+    mlx_image_t *fov;
+    mlx_image_t *gamefield;
+    mlx_image_t *background;
+    mlx_image_t *img;
 	mlx_image_t	*north;
 	mlx_image_t	*south;
 	mlx_image_t	*east;
@@ -73,6 +95,14 @@ int		cub_check(char *line);
 void	find_and_validate_player(t_game *game);
 
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);
+
+void	exit_game(t_game *game);
+void	make_image(t_game *game);
+void	draw_player(t_game *game, int x, int y, int color);
+bool	is_wall(t_game *g, int px, int py);
+void	draw_map(t_game *game, int i, int j);
+void	draw_background(t_game *game, int color_1, int color_2);
+void	file_to_map(t_game *game, char *filename);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
