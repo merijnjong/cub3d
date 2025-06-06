@@ -3,36 +3,40 @@
 /*                                                        :::      ::::::::   */
 /*   cub_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:24:30 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/22 17:24:11 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/06 16:52:54 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-char	*join_lines(char **lines)
-{
-	char	*result;
-	char	*line_with_newline;
-	char	*temp;
-	int		i;
+// static char *join_lines(char **lines)
+// {
+//     char  *result = NULL;
+//     char  *line_with_newline;
+//     char  *temp;
+//     int    i = 0;
+//     int    n;
 
-	result = NULL;
-	i = 0;
-	while (lines[i])
-	{
-		line_with_newline = ft_strjoin2(lines[i], "\n");
-		if (!line_with_newline)
-			return (NULL);
-		temp = ft_strjoin2(result, line_with_newline);
-		free(line_with_newline);
-		result = temp;
-		i++;
-	}
-	return (result);
-}
+//     while (lines[i])
+//         i++;
+//     result = NULL;
+//     for (n = 0; n < i; n++)
+//     {
+//         if (n < i - 1)
+//             line_with_newline = ft_strjoin2(lines[n], "\n");
+//         else
+//             line_with_newline = ft_strjoin2(lines[n], "");
+//         if (!line_with_newline)
+//             return (NULL);
+//         temp = ft_strjoin2(result, line_with_newline);
+//         free(line_with_newline);
+//         result = temp;
+//     }
+//     return (result);
+// }
 
 int	tex_col_check(t_game *game, char **lines)
 {
@@ -86,32 +90,103 @@ char	*read_cub_lines(char *filename)
 	return (content);
 }
 
-void	extract_and_validate_map(t_game *game, char **lines, char *file_content,
-		int start_idx)
+char *join_lines(char **lines)
 {
-	char	*map_start;
-	char	*map_str;
+    char    *result;
+    char    *temp;
+    char    *line_with_newline;
+    int     i;
+    result = ft_strdup("");
+    if (!result)
+        return NULL;
+    i = 0;
+    while (lines[i])
+    {
+        line_with_newline = ft_strjoin(lines[i], "\n");
+        if (!line_with_newline)
+        {
+            free(result);
+            return (NULL);
+        }
+        temp = ft_strjoin(result, line_with_newline);
+        free(line_with_newline);
+        free(result);
+        if (!temp)
+            return NULL;
+        result = temp;
+        i++;
+    }
+    return (result);
+}
+int count_lines(char **map)
+{
+    int i = 0;
+    while (map[i])
+        i++;
+    return i;
+}
+char    **dup_map(char **map, int height)
+{
+    char    **copy;
+    int     i;
+    copy = malloc(sizeof(char *) * (height + 1));
+    if (!copy)
+        return (NULL);
+    i = 0;
+    while (i < height)
+    {
+        copy[i] = ft_strdup(map[i]);
+        if (!copy[i])
+        {
+            while (--i >= 0)
+                free(copy[i]);
+            free(copy);
+            return (NULL);
+        }
+        i++;
+    }
+    copy[i] = NULL;
+    return (copy);
+}
 
-	map_start = ft_strnstr(file_content, lines[start_idx],
-			ft_strlen(file_content));
-	if (!map_start || has_internal_empty_line(map_start))
-	{
-		free_split(lines);
-		free(file_content);
-		exit(ft_printf(MAP_NL_ERROR));
-	}
-	map_str = join_lines(lines + start_idx);
-	game->two_d_map = ft_split(map_str, '\n');
-	game->two_d_map_check = ft_split(map_str, '\n');
-	free(map_str);
-	if (!game->two_d_map || !game->two_d_map_check)
-	{
-		free_split(lines);
-		free(file_content);
-		exit(ft_printf("Error: failed to split map\n"));
-	}
-	free(file_content);
-	count_map_dimensions(game);
+void    extract_and_validate_map(t_game *game, char **lines, char *file_content, int start_idx)
+{
+    char    *map_start;
+    char    *map_str;
+    char    **split_tmp;
+    map_start = ft_strnstr(file_content, lines[start_idx], ft_strlen(file_content));
+    if (!map_start || has_internal_empty_line(map_start))
+    {
+        free_split(lines);
+        free(file_content);
+        exit(ft_printf(MAP_NL_ERROR));
+    }
+    map_str = join_lines(lines + start_idx);
+    if (!map_str)
+    {
+        free_split(lines);
+        free(file_content);
+        exit(ft_printf("Error: failed to join map lines\n"));
+    }
+    split_tmp = ft_split(map_str, '\n');
+    if (!split_tmp)
+    {
+        free(map_str);
+        free_split(lines);
+        free(file_content);
+        exit(ft_printf("Error: failed to split map_str\n"));
+    }
+    game->map_height = count_lines(split_tmp);
+    game->two_d_map = dup_map(split_tmp, game->map_height);
+    game->two_d_map_check = dup_map(split_tmp, game->map_height);
+    free_split(split_tmp);
+    free(map_str);
+    if (!game->two_d_map || !game->two_d_map_check)
+    {
+        free_split(lines);
+        exit(ft_printf("Error: failed to duplicate map\n"));
+    }
+    count_map_dimensions(game);
 }
 
 void	parse_cub_file(t_game *game, char *filename)

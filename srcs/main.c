@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 15:09:28 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/06 17:08:28 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,12 +52,11 @@ int	main(int argc, char **argv)
 	while (game.two_d_map[game.map_height])
     	game.map_height++;
 	print_dbl_ptr(game.two_d_map);
+	printf("x_pos: %i\n", game.x_pos);
+	printf("y_pos: %i\n", game.y_pos);
 
-	printf("kaas is anders\n");
-	draw_background(&game, 0x87CEEBFF, 0x777777FF);
-	printf(" als je een pet op hebt.\n");
+	draw_background(&game, game.floor_colour, game.ceiling_colour);
 	draw_map(&game, 0, 0);
-	printf("Maar dat betekent niet...\n");
 	draw_player(&game, game.x_pos, game.y_pos, 0x00FFFFFF);
 
 	if (game.mlx)

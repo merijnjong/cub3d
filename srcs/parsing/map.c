@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/14 16:23:46 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:18:59 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ void	count_map_dimensions(t_game *game)
 	game->map_height = y;
 	pad_map_lines(game->two_d_map_check, game->map_width);
 	find_and_validate_player(game);
-	flood_fill(game, 1, 1);
+	flood_fill(game, game->x_pos / BLOCK_SIZE, game->y_pos / BLOCK_SIZE);
 	if (game->invalid_map == 1)
 	{
 		ft_printf(FLOOD_FILL_ERROR);

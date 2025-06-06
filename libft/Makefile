@@ -1,26 +1,29 @@
-NAME	:= libft.a
-CFLAGS	:= -g -Wextra -Wall -Werror
+NAME    := libft.a
+CC      := cc
+CFLAGS  := -g -Wextra -Wall -Werror
 
-INCS	:= -I./incs
-SRCS	:= $(shell find ./srcs -name "*.c")
-OBJS	:= ${SRCS:.c=.o}
+INCS    := -I./incs
+SRCS    := $(shell find ./srcs -name "*.c")
+OBJS    := ${SRCS:.c=.o}
 AR      := ar
 ARFLAGS := rcs
+RANLIB  := ranlib
 
 all: $(NAME)
 
 %.o: %.c
-	@$(CC) $(CFLAGS) -o $@ -c $< $(INCS) && printf "Compiling: $(notdir $<)\n"
+	@$(CC) $(CFLAGS) -o $@ -c $< $(INCS) && printf "Compiling: %s\n" "$(notdir $<)"
 
 $(NAME): $(OBJS)
-	@$(AR) $(ARFLAGS) $(NAME) $(OBJS) -o $(NAME)
+	@$(AR) $(ARFLAGS) $(NAME) $(OBJS)
+	@$(RANLIB) $(NAME)
 
 clean:
-	@rm -rf $(OBJS)
+	@rm -f $(OBJS)
 
 fclean: clean
-	@rm -rf $(NAME)
+	@rm -f $(NAME)
 
-re: clean all
+re: fclean all
 
-.PHONY: all, clean, fclean, re
+.PHONY: all clean fclean re

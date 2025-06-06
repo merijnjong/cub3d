@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 15:09:09 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/22 17:25:21 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:16:07 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void	find_and_validate_player(t_game *game)
 				if (x == 0 || x == game->map_width - 1 || y == 0
 					|| y == game->map_height - 1)
 					exit(ft_printf(PLAYER_ERROR));
-				game->x_pos = x;
-				game->y_pos = y;
+				game->x_pos = x * BLOCK_SIZE;
+				game->y_pos = y * BLOCK_SIZE;
 				return ;
 			}
 			x++;

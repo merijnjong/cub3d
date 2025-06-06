@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 15:38:43 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/06 17:35:53 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -439,8 +439,8 @@ void draw_map(t_game *game, int i, int j)
 			if (game->two_d_map[i][j] == '1') {
 				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x000000FF);
 			}
-			else if (game->two_d_map[i][j] == '2') {
-				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFF0000FF);
+			else if (game->two_d_map[i][j] == ' ') {
+				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x00000000);
 			}
 			else if (is_alpha(game->two_d_map[i][j]))
 			{
