@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:35:53 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/06 18:00:12 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -246,41 +246,44 @@ static uint32_t get_shaded_color(uint32_t pixel, int dist, bool hit_vertical) {
     return (r<<24) | (g<<16) | (b<<8) | a;
 }
 
-void draw_game_line(t_game *game,
-                    int wall_height,
-                    int screen_x,
-                    int tex_x,         // already computed in draw_player
-                    bool hit_vertical,
-                    double rayDirX,
-                    double rayDirY)
+void draw_game_line(t_game *game, int wall_height, int screen_x, int tex_x, bool hit_vertical, double rayDirX, double rayDirY)
 {
-    // 1) pick correct face texture
     mlx_image_t *tex;
     if (hit_vertical) {
-        // vertical wall: X‐step
         tex = (rayDirX > 0 ? game->west : game->east);
     } else {
-        // horizontal wall: Y‐step
         tex = (rayDirY > 0 ? game->south : game->north);
     }
-    if (!tex) return;  // guard
+    if (!tex) return;
 
-    // 2) compute on-screen slice bounds
     int mid    = SCREEN_HEIGHT / 2;
     int halfH  = wall_height / 2;
     int top    = mid - halfH;
     int bottom = mid + halfH;
-    if (top    < 0               ) top    = 0;
-    if (bottom > SCREEN_HEIGHT  ) bottom = SCREEN_HEIGHT;
-
-    // 3) draw each pixel of the vertical slice
-    for (int y = top; y < bottom; ++y) {
-        // map y→texture‐Y
-        int tex_y = (y - top) * tex->height / wall_height;
-        uint32_t px = tex->pixels[ tex_y * tex->width + tex_x ];
-        uint32_t c  = get_shaded_color(px, wall_height, hit_vertical);
-        my_pixel_put(game->gamefield, screen_x, y, c);
-    }
+    if (top < 0)
+		top = 0;
+    if (bottom > SCREEN_HEIGHT)
+		bottom = SCREEN_HEIGHT;
+	int y;
+	y = top;
+	while (y < bottom)
+	{
+		int tex_y = (y - top) * tex->height / wall_height;
+	
+		int pixel_index = tex_y * tex->width + tex_x;
+		int byte_offset = pixel_index * 4;
+		uint8_t *p = tex->pixels;
+	
+		uint8_t r = p[byte_offset];
+		uint8_t g = p[byte_offset + 1];
+		uint8_t b = p[byte_offset + 2];
+		uint8_t a = p[byte_offset + 3];
+		uint32_t px = (r << 24) | (g << 16) | (b << 8) | a;
+	
+		uint32_t c = get_shaded_color(px, wall_height, hit_vertical);
+		my_pixel_put(game->gamefield, screen_x, y, c);
+		y++;
+	}
 }
 
 void draw_player(t_game *game, int x, int y, int color)
@@ -304,68 +307,36 @@ void draw_player(t_game *game, int x, int y, int color)
 		i++;
 	}
 
-	// int d = 0;
-	
     game->gamefield = mlx_new_image(game->mlx,
                                     SCREEN_WIDTH,
                                     SCREEN_HEIGHT);
 
-    // Field of view and angle stepping
     const double half_fov    = 60.0 * 0.5;
     const double angle_start = game->dir - half_fov;
     const double delta_angle = 60.0 / (double)SCREEN_WIDTH;
 
     for (int screen_x = 0; screen_x < SCREEN_WIDTH; ++screen_x)
     {
-        // 1) Compute the absolute ray angle (in degrees)
         double ray_angle = angle_start + screen_x * delta_angle;
-        // wrap into [0,360)
         ray_angle = fmod(ray_angle + 360.0, 360.0);
-
-        // 2) Turn that degree into radians for trig
         double rad = ray_angle * (M_PI / 180.0);
-
-        // 3) Compute the direction vector
         double rayDirX = cos(rad);
         double rayDirY = sin(rad);
-
-        // 4) Cast the ray (we pass degrees, but we already have X/Y too)
         bool   was_vertical;
         double hit_x, hit_y;
-        double perpDist = cast_ray(game,
-                                   game->x_pos,
-                                   game->y_pos,
-                                   ray_angle,
-                                   500,
-                                   &was_vertical,
-                                   &hit_x,
-                                   &hit_y);
+        double perpDist = cast_ray(game, game->x_pos, game->y_pos, ray_angle, 500, &was_vertical, &hit_x, &hit_y);
 
         if (perpDist > 0.0)
         {
-            // Compute wall slice height
             int wall_h = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / perpDist);
-
-            // Figure out which column of the texture to sample
-            double hit_offset = was_vertical
-                              ? fmod(hit_y, BLOCK_SIZE)
-                              : fmod(hit_x, BLOCK_SIZE);
+            double hit_offset = was_vertical ? fmod(hit_y, BLOCK_SIZE) : fmod(hit_x, BLOCK_SIZE);
             int tex_x = (int)(hit_offset / BLOCK_SIZE * game->west->width);
 
-            // 5) Draw it, passing rayDirX/Y so we can choose the right face
-            draw_game_line(game,
-                           wall_h,
-                           screen_x,
-                           tex_x,
-                           was_vertical,
-                           rayDirX,
-                           rayDirY);
+            draw_game_line(game, wall_h, screen_x, tex_x, was_vertical, rayDirX, rayDirY);
         }
     }
-
-    // Blit the 3D view and the little player dot
     mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
-    mlx_image_to_window(game->mlx, game->player,     x, y);
+    mlx_image_to_window(game->mlx, game->player, x, y);
 }
 
 void draw_background(t_game *game, int color_1, int color_2)
