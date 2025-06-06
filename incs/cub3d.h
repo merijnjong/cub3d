@@ -6,7 +6,7 @@
 /*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:03:41 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/06 17:57:19 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,5 +108,7 @@ void	draw_background(t_game *game, int color_1, int color_2);
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
 void	free_split(char **arr);
+void	exit_free(char **lines, char *content, const char *msg);
+void	assign_maps(t_game *game, char **split_tmp);
 
 #endif
