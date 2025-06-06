@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:08:28 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/06 17:37:59 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,13 +58,13 @@ int	main(int argc, char **argv)
 	draw_background(&game, game.floor_colour, game.ceiling_colour);
 	draw_map(&game, 0, 0);
 	draw_player(&game, game.x_pos, game.y_pos, 0x00FFFFFF);
-
 	if (game.mlx)
 	{
 		mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
 		mlx_loop(game.mlx);
 	}
 	mlx_loop(game.mlx);
+	free_split(game.two_d_map);
 	mlx_terminate(game.mlx);
 	return (0);
 }

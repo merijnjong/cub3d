@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/05/14 15:09:09 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:16:07 by dkros            ###   ########.fr       */
+/*   Created: Invalid date        by                   #+#    #+#             */
+/*   Updated: 2025/06/06 17:39:51 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../../incs/cub3d.h"
 
@@ -81,4 +82,37 @@ void	find_and_validate_player(t_game *game)
 		y++;
 	}
 	exit(ft_printf(PLAYER_ERROR));
+}
+
+int	count_lines(char **map)
+{
+	int i = 0;
+	while (map[i])
+		i++;
+	return i;
+}
+
+char	**dup_map(char **map, int height)
+{
+	char	**copy;
+	int		i;
+
+	copy = malloc(sizeof(char *) * (height + 1));
+	if (!copy)
+		return (NULL);
+	i = 0;
+	while (i < height)
+	{
+		copy[i] = ft_strdup(map[i]);
+		if (!copy[i])
+		{
+			while (--i >= 0)
+				free(copy[i]);
+			free(copy);
+			return (NULL);
+		}
+		i++;
+	}
+	copy[i] = NULL;
+	return (copy);
 }

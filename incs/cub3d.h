@@ -6,7 +6,7 @@
 /*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 14:53:55 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/06 17:03:41 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,6 +93,8 @@ void	assign_texture(t_game *game, char *line);
 int		has_internal_empty_line(char *str);
 int		cub_check(char *line);
 void	find_and_validate_player(t_game *game);
+int		count_lines(char **map);
+char	**dup_map(char **map, int height);
 
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
@@ -102,7 +104,6 @@ void	draw_player(t_game *game, int x, int y, int color);
 bool	is_wall(t_game *g, int px, int py);
 void	draw_map(t_game *game, int i, int j);
 void	draw_background(t_game *game, int color_1, int color_2);
-void	file_to_map(t_game *game, char *filename);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);
