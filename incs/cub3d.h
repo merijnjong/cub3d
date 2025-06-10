@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:57:19 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/10 16:32:51 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_game
 	int			map_height;
 	int			tex_col_check;
 	int			invalid_map;
+	int			map_depth;
 	char		**two_d_map;
 	char		**two_d_map_check;
     t_line_data c;
@@ -76,7 +77,7 @@ typedef struct s_game
     mlx_image_t *fov;
     mlx_image_t *gamefield;
     mlx_image_t *background;
-    mlx_image_t *img;
+    mlx_image_t *map;
 	mlx_image_t	*north;
 	mlx_image_t	*south;
 	mlx_image_t	*east;
@@ -100,7 +101,8 @@ void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 void	exit_game(t_game *game);
 void	make_image(t_game *game);
-void	draw_player(t_game *game, int x, int y, int color);
+void	draw_gamefield(t_game *game);
+void	draw_player(t_game *game, int x, int y);
 bool	is_wall(t_game *g, int px, int py);
 void	draw_map(t_game *game, int i, int j);
 void	draw_background(t_game *game, int color_1, int color_2);

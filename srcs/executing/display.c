@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 15:51:52 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 17:38:24 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/10 14:53:28 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	make_image(t_game *game)
 	mlx_texture_t	*s;
 	mlx_texture_t	*w;
 
-	n = mlx_load_png("textures/north.png");
-	e = mlx_load_png("textures/east.png");
+	n = mlx_load_png("textures/stone2.png");
+	e = mlx_load_png("textures/grass2.png");
 	s = mlx_load_png("textures/south.png");
 	w = mlx_load_png("textures/west.png");
 	game->north = mlx_texture_to_image(game->mlx, n);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 14:39:28 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/10 16:33:00 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,8 @@ void	ft_hooks(mlx_key_data_t keydata, t_game *game)
 
 		mlx_delete_image(game->mlx, game->player);
 		mlx_delete_image(game->mlx, game->gamefield);
-		draw_player(game, game->x_pos, game->y_pos, 0x00FFFFFF);
+		draw_gamefield(game);
+		mlx_image_to_window(game->mlx, game->map, 0, 0);
+		draw_player(game, game->x_pos, game->y_pos);
 	}
 }

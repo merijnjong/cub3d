@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 18:00:12 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/10 16:32:31 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,45 +18,16 @@ void	my_pixel_put(mlx_image_t *img, int x, int y, int color)
 		mlx_put_pixel(img, x, y, color);
 }
 
-double draw_line(mlx_image_t *img, int x1, int y1, int x2, int y2, int color)
+double get_dist(int x1, int y1, int x2, int y2)
 {
 	int dx = abs(x2 - x1);
 	int dy = abs(y2 - y1);
-	int sx = (x1 < x2) ? 1 : -1;
-	int sy = (y1 < y2) ? 1 : -1;
-	int err = dx - dy;
-	int e2;
 
-	(void)(color);
-	(void)(img);
-	(void)(sy);
-	(void)(sx);
-	(void)(err);
-	(void)(e2);
-
-
-	// while (1)
-	// {
-	// 	// my_pixel_put(img, x1, y1, color);
-	// 	if (x1 == x2 && y1 == y2)
-	// 		break;
-	// 	e2 = 2 * err;
-	// 	if (e2 > -dy)
-	// 	{
-	// 		err -= dy;
-	// 		x1 += sx;
-	// 	}
-	// 	if (e2 < dx)
-	// 	{
-	// 		err += dx;
-	// 		y1 += sy;
-	// 	}
-	// }
 	double len = sqrt((double)(pow(dx, 2) + pow(dy, 2)));
 	return (len);
 }
 
-void draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_deg, int color)
+void draw_line_angle(int x, int y, int length, double angle_deg)
 {
 	double angle_rad;
 	angle_rad = angle_deg * (M_PI / 180.0);
@@ -67,7 +38,7 @@ void draw_line_angle(mlx_image_t *img, int x, int y, int length, double angle_de
 	x_end = x + (int)(length * cos(angle_rad));
 	y_end = y + (int)(length * sin(angle_rad));
 
-	draw_line(img, x, y, x_end, y_end, color);
+	get_dist(x, y, x_end, y_end);
 }
 
 mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
@@ -75,10 +46,7 @@ mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
 	int i;
 	int j;
 
-
-	(void)color;
-	data->img = mlx_new_image(data->mlx, size, size);
-	if (!data->img)
+	if (!data->map)
 	return (NULL);
 	i = 0;
 	while (i < (size - 1))
@@ -86,13 +54,12 @@ mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
 		j = 0;
 		while (j < (size - 1))
 		{
-			my_pixel_put(data->img, j, i, color);
+			my_pixel_put(data->map, j + x, i + y, color);
 			j++;
 		}
 		i++;
 	}
-	mlx_image_to_window(data->mlx, data->img, x, y);
-	return (data->img);
+	return (data->map);
 }
 
 bool in_bounds(t_game *g, int x, int y)
@@ -191,36 +158,6 @@ double cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int ma
     return perpDist;
 }
 
-
-// int get_color_from_distance(int len, int color, bool vertical)
-// {
-// 	uint8_t red;
-// 	uint8_t green;
-// 	uint8_t blue;
-// 	uint8_t new_color;
-// 	double shade;
-
-// 	red = (color >> 24) & 0xFF;
-// 	green = (color >> 16) & 0xFF;
-// 	blue = (color >> 8) & 0xFF;
-
-// 	shade = 1.0 - ((500.0 / len) * 0.03);
-
-// 	if (shade < 0.0)
-// 		shade = 0.0;
-// 	if (shade > 1.0)
-// 		shade = 1.0;
-// 	if (vertical)
-//         shade *= 0.9;
-
-// 	red = (uint8_t)(red * shade);
-// 	green = (uint8_t)(red * shade);
-// 	blue = (uint8_t)(red * shade);
-
-// 	new_color = (red << 24) | (green << 16) | (blue << 8) | 0xFF;
-// 	return (new_color);
-// }
-
 static double clamp(double v, double lo, double hi) {
     return v < lo ? lo : v > hi ? hi : v;
 }
@@ -286,35 +223,13 @@ void draw_game_line(t_game *game, int wall_height, int screen_x, int tex_x, bool
 	}
 }
 
-void draw_player(t_game *game, int x, int y, int color)
+void draw_gamefield(t_game *game)
 {
-	int i;
-	int j;
-
-	game->player = mlx_new_image(game->mlx, 10, 10);
-	if (!game->player)
-		return;
-
-	i = 0;
-	while (i < 10)
-	{
-		j = 0;
-		while (j < 10)
-		{
-			my_pixel_put(game->player, (0 + j), (0 + i), color);
-			j++;
-		}
-		i++;
-	}
-
-    game->gamefield = mlx_new_image(game->mlx,
-                                    SCREEN_WIDTH,
-                                    SCREEN_HEIGHT);
-
-    const double half_fov    = 60.0 * 0.5;
+	const double half_fov    = 60.0 * 0.5;
     const double angle_start = game->dir - half_fov;
     const double delta_angle = 60.0 / (double)SCREEN_WIDTH;
-
+	
+	game->gamefield = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
     for (int screen_x = 0; screen_x < SCREEN_WIDTH; ++screen_x)
     {
         double ray_angle = angle_start + screen_x * delta_angle;
@@ -331,12 +246,10 @@ void draw_player(t_game *game, int x, int y, int color)
             int wall_h = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / perpDist);
             double hit_offset = was_vertical ? fmod(hit_y, BLOCK_SIZE) : fmod(hit_x, BLOCK_SIZE);
             int tex_x = (int)(hit_offset / BLOCK_SIZE * game->west->width);
-
             draw_game_line(game, wall_h, screen_x, tex_x, was_vertical, rayDirX, rayDirY);
         }
     }
     mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
-    mlx_image_to_window(game->mlx, game->player, x, y);
 }
 
 void draw_background(t_game *game, int color_1, int color_2)
@@ -402,27 +315,47 @@ void set_player_position(t_game *game, char c, int i, int j)
 
 void draw_map(t_game *game, int i, int j)
 {
+	game->map = mlx_new_image(game->mlx, game->map_width * BLOCK_SIZE, game->map_height * BLOCK_SIZE);
 	while (game->two_d_map && game->two_d_map[i])
 	{
 		j = 0;
 		while (game->two_d_map[i][j])
 		{
-			if (game->two_d_map[i][j] == '1') {
+			if (game->two_d_map[i][j] == '1')
 				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x000000FF);
-			}
-			else if (game->two_d_map[i][j] == ' ') {
+			else if (game->two_d_map[i][j] == ' ')
 				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x00000000);
-			}
 			else if (is_alpha(game->two_d_map[i][j]))
-			{
 				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
-			}
 			else
-			{
 				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
-			}
 			j++;
 		}
 		i++;
 	}
+	mlx_image_to_window(game->mlx, game->map, 0, 0);
+}
+
+
+void draw_player(t_game *game, int x, int y)
+{
+	int i;
+	int j;
+
+	game->player = mlx_new_image(game->mlx, 10, 10);
+	if (!game->player)
+		return;
+
+	i = 0;
+	while (i < 10)
+	{
+		j = 0;
+		while (j < 10)
+		{
+			my_pixel_put(game->player, (0 + j), (0 + i), 0XFF22FFFF);
+			j++;
+		}
+		i++;
+	}
+	mlx_image_to_window(game->mlx, game->player, x, y);
 }
