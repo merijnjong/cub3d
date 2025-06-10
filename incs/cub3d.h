@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/10 16:53:57 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/11 01:41:08 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,12 @@ typedef struct s_game
 	int			x_pos;
 	int			y_pos;
 	int         dir;
+	int			tex_col_check;
 	int			map_width;
 	int			map_height;
-	int			tex_col_check;
 	int			invalid_map;
-	int			map_depth;
 	char		**two_d_map;
 	char		**two_d_map_check;
-    t_line_data c;
 	uint32_t	floor_colour;
 	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
@@ -82,6 +80,7 @@ typedef struct s_game
 	mlx_image_t	*south;
 	mlx_image_t	*east;
 	mlx_image_t	*west;
+    t_line_data c;
 }	t_game;
 
 //srcs/parsing
@@ -95,7 +94,6 @@ int		has_internal_empty_line(char *str);
 int		cub_check(char *line);
 void	find_and_validate_player(t_game *game);
 int		count_lines(char **map);
-char	**dup_map(char **map, int height);
 
 // executing/move.c
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);

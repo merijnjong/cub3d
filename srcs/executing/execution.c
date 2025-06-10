@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/10 16:43:35 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/11 01:31:16 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,7 @@ bool in_bounds(t_game *g, int x, int y)
     return true;
 }
 
-
-void set_player_position(t_game *game, char c, int i, int j)
+void	set_player_position(t_game *game, char c, int i, int j)
 {
 	printf("%c", c);
 	if (c == 'N')
@@ -63,7 +62,7 @@ void set_player_position(t_game *game, char c, int i, int j)
 	game->y_pos = j * BLOCK_SIZE;
 }
 
-void exit_game(t_game *game)
+void	exit_game(t_game *game)
 {
 	mlx_terminate(game->mlx);
 	ft_free(game->two_d_map);

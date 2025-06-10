@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculations.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:42:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/10 16:44:59 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/11 01:26:46 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,6 @@ double clamp(double v, double lo, double hi)
 {
 	return v < lo ? lo : v > hi ? hi : v;
 }
-
 
 uint32_t get_shaded_color(uint32_t pixel, int dist, bool hit_vertical)
 {

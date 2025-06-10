@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/10 16:33:13 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/11 01:43:28 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-void	init(t_game *game)
+void	initialise(t_game *game)
 {
 	game->x_pos = 0;
 	game->y_pos = 0;
 	game->dir = 270;
+	game->tex_col_check = 0;
 	game->map_width = 0;
 	game->map_height = 0;
-	game->tex_col_check = 0;
 	game->invalid_map = 0;
 	game->two_d_map = NULL;
 	game->two_d_map_check = NULL;
@@ -47,16 +47,14 @@ int	main(int argc, char **argv)
 		ft_printf(INPUT_ERROR);
 		exit(1);
 	}
-	init(&game);
+	initialise(&game);
 	parse_cub_file(&game, argv[1]);
 	while (game.two_d_map[game.map_height])
     	game.map_height++;
-	print_dbl_ptr(game.two_d_map);
 	draw_background(&game, game.floor_colour, game.ceiling_colour);
 	draw_gamefield(&game);
 	draw_map(&game, 0, 0);
 	draw_player(&game, game.x_pos, game.y_pos);
-
 	if (game.mlx)
 	{
 		mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
