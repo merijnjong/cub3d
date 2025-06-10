@@ -1,0 +1,164 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   drawing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/10 16:40:18 by dkros             #+#    #+#             */
+/*   Updated: 2025/06/10 16:43:00 by dkros            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../incs/cub3d.h"
+
+void draw_gamefield(t_game *game)
+{
+	const double half_fov    = 60.0 * 0.5;
+    const double angle_start = game->dir - half_fov;
+    const double delta_angle = 60.0 / (double)SCREEN_WIDTH;
+	
+	game->gamefield = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+    for (int screen_x = 0; screen_x < SCREEN_WIDTH; ++screen_x)
+    {
+        double ray_angle = angle_start + screen_x * delta_angle;
+        ray_angle = fmod(ray_angle + 360.0, 360.0);
+        double rad = ray_angle * (M_PI / 180.0);
+        double rayDirX = cos(rad);
+        double rayDirY = sin(rad);
+        bool   was_vertical;
+        double hit_x, hit_y;
+        double perpDist = cast_ray(game, game->x_pos, game->y_pos, ray_angle, 500, &was_vertical, &hit_x, &hit_y);
+
+        if (perpDist > 0.0)
+        {
+            int wall_h = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / perpDist);
+            double hit_offset = was_vertical ? fmod(hit_y, BLOCK_SIZE) : fmod(hit_x, BLOCK_SIZE);
+            int tex_x = (int)(hit_offset / BLOCK_SIZE * game->west->width);
+            draw_game_line(game, wall_h, screen_x, tex_x, was_vertical, rayDirX, rayDirY);
+        }
+    }
+    mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
+}
+
+void draw_background(t_game *game, int color_1, int color_2)
+{
+	int i, j;
+
+	i = 0;
+	j = 0;
+	game->background = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
+	if (!game->background)
+		return;
+
+	while (i < (SCREEN_HEIGHT / 2))
+	{
+		j = 0;
+		while (j < SCREEN_WIDTH)
+		{
+			my_pixel_put(game->background, j, i, color_1);
+			j++;
+		}
+		i++;
+	}
+
+	while (i < SCREEN_HEIGHT)
+	{
+		j = 0;
+		while (j < SCREEN_WIDTH)
+		{
+			my_pixel_put(game->background, j, i, color_2);
+			j++;
+		}
+		i++;
+	}
+	mlx_image_to_window(game->mlx, game->background, 0, 0);
+}
+
+
+void draw_map(t_game *game, int i, int j)
+{
+	game->map = mlx_new_image(game->mlx, game->map_width * BLOCK_SIZE, game->map_height * BLOCK_SIZE);
+	while (game->two_d_map && game->two_d_map[i])
+	{
+		j = 0;
+		while (game->two_d_map[i][j])
+		{
+			if (game->two_d_map[i][j] == '1')
+				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x000000FF);
+			else if (game->two_d_map[i][j] == ' ')
+				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0x00000000);
+			else if (is_alpha(game->two_d_map[i][j]))
+				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
+			else
+				draw_square(game, (j * BLOCK_SIZE), (i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
+			j++;
+		}
+		i++;
+	}
+	mlx_image_to_window(game->mlx, game->map, 0, 0);
+}
+
+
+void draw_player(t_game *game, int x, int y)
+{
+	int i;
+	int j;
+
+	game->player = mlx_new_image(game->mlx, 10, 10);
+	if (!game->player)
+		return;
+
+	i = 0;
+	while (i < 10)
+	{
+		j = 0;
+		while (j < 10)
+		{
+			my_pixel_put(game->player, (0 + j), (0 + i), 0XFF22FFFF);
+			j++;
+		}
+		i++;
+	}
+	mlx_image_to_window(game->mlx, game->player, x, y);
+}
+
+void draw_game_line(t_game *game, int wall_height, int screen_x, int tex_x, bool hit_vertical, double rayDirX, double rayDirY)
+{
+	mlx_image_t *tex;
+    if (hit_vertical) {
+        tex = (rayDirX > 0 ? game->west : game->east);
+    } else {
+        tex = (rayDirY > 0 ? game->south : game->north);
+    }
+    if (!tex) return;
+
+    int mid    = SCREEN_HEIGHT / 2;
+    int halfH  = wall_height / 2;
+    int top    = mid - halfH;
+    int bottom = mid + halfH;
+    if (top < 0)
+		top = 0;
+    if (bottom > SCREEN_HEIGHT)
+		bottom = SCREEN_HEIGHT;
+	int y;
+	y = top;
+	while (y < bottom)
+	{
+		int tex_y = (y - top) * tex->height / wall_height;
+	
+		int pixel_index = tex_y * tex->width + tex_x;
+		int byte_offset = pixel_index * 4;
+		uint8_t *p = tex->pixels;
+	
+		uint8_t r = p[byte_offset];
+		uint8_t g = p[byte_offset + 1];
+		uint8_t b = p[byte_offset + 2];
+		uint8_t a = p[byte_offset + 3];
+		uint32_t px = (r << 24) | (g << 16) | (b << 8) | a;
+	
+		uint32_t c = get_shaded_color(px, wall_height, hit_vertical);
+		my_pixel_put(game->gamefield, screen_x, y, c);
+		y++;
+	}
+}

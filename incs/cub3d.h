@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/10 16:32:51 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/10 16:53:57 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,15 +97,33 @@ void	find_and_validate_player(t_game *game);
 int		count_lines(char **map);
 char	**dup_map(char **map, int height);
 
+// executing/move.c
 void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
-void	exit_game(t_game *game);
+// executing/display.c
 void	make_image(t_game *game);
+
+// executing/drawing.c
 void	draw_gamefield(t_game *game);
 void	draw_player(t_game *game, int x, int y);
-bool	is_wall(t_game *g, int px, int py);
 void	draw_map(t_game *game, int i, int j);
 void	draw_background(t_game *game, int color_1, int color_2);
+
+// executing/calculations.c
+bool		is_wall(t_game *g, int px, int py);
+double		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, bool *hit_vertical, double *hit_x, double *hit_y);
+void		draw_game_line(t_game *game, int wall_height, int screen_x, int tex_x, bool hit_vertical, double rayDirX, double rayDirY);
+uint32_t	get_shaded_color(uint32_t pixel, int dist, bool hit_vertical);
+double		clamp(double v, double lo, double hi);
+
+// executing/utils.c
+void	my_pixel_put(mlx_image_t *img, int x, int y, int color);
+bool	is_alpha(char c);
+
+// executing/execution.c
+void		exit_game(t_game *game);
+mlx_image_t	*draw_square(t_game *data, int x, int y, int size, int color);
+bool		in_bounds(t_game *g, int x, int y);
 
 //srcs/utils.c
 void	print_dbl_ptr(char **ptr);

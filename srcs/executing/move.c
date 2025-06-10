@@ -6,18 +6,12 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/10 16:33:00 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/10 16:43:25 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-void exit_game(t_game *game)
-{
-	mlx_terminate(game->mlx);
-	ft_free(game->two_d_map);
-	exit(EXIT_SUCCESS);
-}
 
 void move_forward(t_game *game, double angle_rad)
 {
