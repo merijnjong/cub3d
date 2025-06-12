@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/12 14:23:29 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/12 14:38:44 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ void	handle_input(void *param)
 
 	game = (t_game *)param;
 	angle_rad = game->dir * (M_PI / 180.0);
-
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
 		exit_game(game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))

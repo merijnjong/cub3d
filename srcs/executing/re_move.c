@@ -1,14 +1,14 @@
-// /* ************************************************************************** */
-// /*                                                                            */
-// /*                                                        :::      ::::::::   */
-// /*   re_move.c                                          :+:      :+:    :+:   */
-// /*                                                    +:+ +:+         +:+     */
-// /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
-// /*                                                +#+#+#+#+#+   +#+           */
-// /*   Created: 2025/06/12 14:12:25 by mjong             #+#    #+#             */
-// /*   Updated: 2025/06/12 14:13:33 by mjong            ###   ########.fr       */
-// /*                                                                            */
-// /* ************************************************************************** */
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   re_move.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/06/12 14:12:25 by mjong             #+#    #+#             */
+/*   Updated: 2025/06/12 14:39:38 by mjong            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 // #include "../../incs/cub3d.h"
 
@@ -19,7 +19,6 @@
 
 // 	temp_x_pos = (cos(angle_rad) * 5) + game->x_pos;
 // 	temp_y_pos = (sin(angle_rad) * 5) + game->y_pos;
-	
 // 	if (!is_wall(game, temp_x_pos + 1, temp_y_pos + 1))
 // 	{
 // 		game->x_pos = temp_x_pos;
@@ -35,7 +34,6 @@
 
 // 	temp_x_pos = game->x_pos - (cos(angle_rad) * 5);
 // 	temp_y_pos = game->y_pos - (sin(angle_rad) * 5);
-	
 // 	if (!is_wall(game, temp_x_pos - 1, temp_y_pos - 1))
 // 	{
 // 		game->x_pos = temp_x_pos;
@@ -51,7 +49,6 @@
 
 // 	temp_x_pos = (cos(angle_rad + M_PI * 1.5) * 5) + game->x_pos;
 // 	temp_y_pos = (sin(angle_rad + M_PI * 1.5) * 5) + game->y_pos;
-	
 // 	if (!is_wall(game, temp_x_pos + 1, temp_y_pos + 1))
 // 	{
 // 		game->x_pos = temp_x_pos;
@@ -67,7 +64,6 @@
 
 // 	temp_x_pos = game->x_pos - (cos(angle_rad + M_PI * 1.5) * 5);
 // 	temp_y_pos = game->y_pos - (sin(angle_rad + M_PI * 1.5) * 5);
-	
 // 	if (!is_wall(game, temp_x_pos - 1, temp_y_pos - 1))
 // 	{
 // 		game->x_pos = temp_x_pos;
