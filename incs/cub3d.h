@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/11 01:41:08 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/12 14:23:48 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,21 +46,24 @@
 # define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
 # define INT_MAX 2147483647
+# define WALK_SPEED 2
+# define TURN_SPEED 4.0
+
 
 typedef struct s_line_data_t
 {
-    int x1;
-    int x2;
-    int y1;
-    int y2;
-    int dy;
-}   t_line_data;
+	int	x1;
+	int	x2;
+	int	y1;
+	int	y2;
+	int	dy;
+}	t_line_data;
 
 typedef struct s_game
 {
 	int			x_pos;
 	int			y_pos;
-	int         dir;
+	int			dir;
 	int			tex_col_check;
 	int			map_width;
 	int			map_height;
@@ -70,17 +73,17 @@ typedef struct s_game
 	uint32_t	floor_colour;
 	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
-	mlx_image_t *roof;
-    mlx_image_t *player;
-    mlx_image_t *fov;
-    mlx_image_t *gamefield;
-    mlx_image_t *background;
-    mlx_image_t *map;
+	mlx_image_t	*roof;
+	mlx_image_t	*player;
+	mlx_image_t	*fov;
+	mlx_image_t	*gamefield;
+	mlx_image_t	*background;
+	mlx_image_t	*map;
 	mlx_image_t	*north;
 	mlx_image_t	*south;
 	mlx_image_t	*east;
 	mlx_image_t	*west;
-    t_line_data c;
+	t_line_data	c;
 }	t_game;
 
 //srcs/parsing
@@ -96,7 +99,8 @@ void	find_and_validate_player(t_game *game);
 int		count_lines(char **map);
 
 // executing/move.c
-void	ft_hooks(mlx_key_data_t keydata, t_game *game);
+void	ft_hooks(t_game *game);
+// void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 // executing/display.c
 void	make_image(t_game *game);

@@ -3,13 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/11 01:29:59 by merijnjong       ###   ########.fr       */
+/*   Created: 2025/04/16 16:30:45 by mjong             #+#    #+#             */
+/*   Updated: 2025/06/12 13:21:50 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 
 #include "../../incs/cub3d.h"
 
@@ -86,8 +85,10 @@ void	find_and_validate_player(t_game *game)
 
 int	count_lines(char **map)
 {
-	int i = 0;
+	int	i;
+
+	i = 0;
 	while (map[i])
 		i++;
-	return i;
+	return (i);
 }

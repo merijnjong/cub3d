@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/11 01:43:28 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/12 14:24:13 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,18 +50,45 @@ int	main(int argc, char **argv)
 	initialise(&game);
 	parse_cub_file(&game, argv[1]);
 	while (game.two_d_map[game.map_height])
-    	game.map_height++;
+		game.map_height++;
 	draw_background(&game, game.floor_colour, game.ceiling_colour);
 	draw_gamefield(&game);
 	draw_map(&game, 0, 0);
 	draw_player(&game, game.x_pos, game.y_pos);
 	if (game.mlx)
 	{
-		mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
+		ft_hooks(&game);
 		mlx_loop(game.mlx);
 	}
-	mlx_loop(game.mlx);
 	free_split(game.two_d_map);
 	mlx_terminate(game.mlx);
 	return (0);
 }
+
+// int	main(int argc, char **argv)
+// {
+// 	t_game	game;
+
+// 	if (!argv[1] || argc > 2 || cub_check(argv[1]))
+// 	{
+// 		ft_printf(INPUT_ERROR);
+// 		exit(1);
+// 	}
+// 	initialise(&game);
+// 	parse_cub_file(&game, argv[1]);
+// 	while (game.two_d_map[game.map_height])
+//     	game.map_height++;
+// 	draw_background(&game, game.floor_colour, game.ceiling_colour);
+// 	draw_gamefield(&game);
+// 	draw_map(&game, 0, 0);
+// 	draw_player(&game, game.x_pos, game.y_pos);
+// 	if (game.mlx)
+// 	{
+// 		mlx_key_hook(game.mlx, (void *)&ft_hooks, &game);
+// 		mlx_loop(game.mlx);
+// 	}
+// 	mlx_loop(game.mlx);
+// 	free_split(game.two_d_map);
+// 	mlx_terminate(game.mlx);
+// 	return (0);
+// }

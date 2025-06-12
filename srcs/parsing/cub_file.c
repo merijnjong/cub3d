@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: Invalid date        by                   #+#    #+#             */
-/*   Updated: 2025/06/06 17:57:54 by merijnjong       ###   ########.fr       */
+/*   Created: 2025/04/16 16:32:14 by mjong             #+#    #+#             */
+/*   Updated: 2025/06/12 13:22:13 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 
 char	*join_lines(char **lines)
 {
-    char	*result;
-    char	*line_with_newline;
-    char	*new_result;
-    int		i;
+	char	*result;
+	char	*line_with_newline;
+	char	*new_result;
+	int		i;
 
-    result = ft_strdup("");
-    if (!result)
-        return (NULL);
-    i = -1;
-    while (lines[++i])
-    {
-        line_with_newline = ft_strjoin(lines[i], "\n");
-        if (!line_with_newline)
-        {
-            free(result);
-            return (NULL);
-        }
-        new_result = ft_strjoin(result, line_with_newline);
-        free(line_with_newline);
-        free(result);
-        if (!new_result)
-            return (NULL);
-        result = new_result;
-    }
-    return (result);
+	result = ft_strdup("");
+	if (!result)
+		return (NULL);
+	i = -1;
+	while (lines[++i])
+	{
+		line_with_newline = ft_strjoin(lines[i], "\n");
+		if (!line_with_newline)
+		{
+			free(result);
+			return (NULL);
+		}
+		new_result = ft_strjoin(result, line_with_newline);
+		free(line_with_newline);
+		free(result);
+		if (!new_result)
+			return (NULL);
+		result = new_result;
+	}
+	return (result);
 }
 
 int	tex_col_check(t_game *game, char **lines)
@@ -93,13 +93,15 @@ char	*read_cub_lines(char *filename)
 	return (content);
 }
 
-void	extract_and_validate_map(t_game *game, char **lines, char *file_content, int start_idx)
+void	extract_and_validate_map(t_game *game, char **lines, char *file_content,
+		int start_idx)
 {
 	char	*map_start;
 	char	*map_str;
 	char	**split_tmp;
 
-	map_start = ft_strnstr(file_content, lines[start_idx], ft_strlen(file_content));
+	map_start = ft_strnstr(file_content, lines[start_idx],
+			ft_strlen(file_content));
 	if (!map_start || has_internal_empty_line(map_start))
 		exit_free(lines, file_content, MAP_NL_ERROR);
 	map_str = join_lines(lines + start_idx);

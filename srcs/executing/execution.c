@@ -3,22 +3,22 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/11 01:31:16 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/12 13:41:40 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
+mlx_image_t	*draw_square(t_game *data, int x, int y, int size, int color)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	if (!data->map)
-	return (NULL);
+		return (NULL);
 	i = 0;
 	while (i < (size - 1))
 	{
@@ -33,13 +33,13 @@ mlx_image_t *draw_square(t_game *data, int x, int y, int size, int color)
 	return (data->map);
 }
 
-bool in_bounds(t_game *g, int x, int y)
+bool	in_bounds(t_game *g, int x, int y)
 {
-    if (y < 0 || y >= g->map_height) 
-        return false;
-    if (x < 0 || x >= (int)ft_strlen(g->two_d_map[y]))
-        return false;
-    return true;
+	if (y < 0 || y >= g->map_height)
+		return (false);
+	if (x < 0 || x >= (int)ft_strlen(g->two_d_map[y]))
+		return (false);
+	return (true);
 }
 
 void	set_player_position(t_game *game, char c, int i, int j)
