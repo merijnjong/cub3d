@@ -3,8 +3,8 @@ SO ./textures/grass2.png
 WE ./textures/stone2.png
 EA ./textures/grass2.png
 
-C 139,69,19
-F 135, 206, 235
+C 0,0,0
+F 0, 0, 0
 
 
 111111111111111111111

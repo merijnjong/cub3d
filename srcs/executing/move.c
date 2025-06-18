@@ -6,23 +6,23 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 17:58:34 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/18 19:52:51 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-void refresh_frame(t_game *game)
+void	refresh_frame(t_game *game)
 {
 	mlx_delete_image(game->mlx, game->gamefield);
 	draw_gamefield(game);
-	mlx_delete_image(game->mlx, game->player);
 	mlx_image_to_window(game->mlx, game->map, 0, 0);
+	mlx_delete_image(game->mlx, game->player);
 	draw_player(game, game->x_pos, game->y_pos);
 	return ;
 }
 
-int collission_detection(t_game *game, int x, int y, int range)
+int	coll_detection(t_game *game, int x, int y, int range)
 {
 	if (!is_wall(game, x + range, y + range)
 		&& !is_wall(game, x - range, y - range)
@@ -44,40 +44,47 @@ void	move_player(t_game *game, double angle_rad, double angle_offset,
 		move_angle += M_PI;
 	temp_x_pos = (int)(cos(move_angle) * WALK_SPEED) + game->x_pos;
 	temp_y_pos = (int)(sin(move_angle) * WALK_SPEED) + game->y_pos;
-	if (!collission_detection(game, temp_x_pos, temp_y_pos, (BLOCK_SIZE / 4 - 1)))
+	if (!coll_detection(game, temp_x_pos, temp_y_pos, (BLOCK_SIZE / 4 - 1)))
 	{
 		game->x_pos = temp_x_pos;
 		game->y_pos = temp_y_pos;
 		game->should_refresh = true;
 	}
-	return;
+	return ;
 }
 
-
-void	handle_input(void *param)
+void	change_direction(t_game *game, bool left)
 {
-	t_game	*game;
-	double	angle_rad;
-	game = (t_game *)param;
-	game->should_refresh = false;
-
-	angle_rad = game->dir * (M_PI / 180.0);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
-		exit_game(game);
-	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+	if (left == true)
 	{
 		game->dir -= TURN_SPEED;
 		if (game->dir < 0)
 			game->dir += 360;
 		game->should_refresh = true;
 	}
-	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+	else
 	{
 		game->dir += TURN_SPEED;
 		if (game->dir >= 360)
 			game->dir -= 360;
 		game->should_refresh = true;
 	}
+}
+
+void	handle_input(void *param)
+{
+	t_game	*game;
+	double	angle_rad;
+
+	game = (t_game *)param;
+	game->should_refresh = false;
+	angle_rad = game->dir * (M_PI / 180.0);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
+		exit_game(game);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
+		change_direction(game, true);
+	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
+		change_direction(game, false);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_W))
 		move_player(game, angle_rad, 0, 1);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
@@ -86,7 +93,6 @@ void	handle_input(void *param)
 		move_player(game, angle_rad, M_PI / 2, -1);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 		move_player(game, angle_rad, M_PI / 2, 1);
-	
 	if (game->should_refresh)
 		refresh_frame(game);
 }

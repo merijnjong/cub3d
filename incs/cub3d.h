@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 18:00:17 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/18 18:04:22 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
 # define INT_MAX 2147483647
-# define WALK_SPEED 4
+# define WALK_SPEED 2
 # define TURN_SPEED 4.0
 
 
