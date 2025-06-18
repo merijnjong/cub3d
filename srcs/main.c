@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/12 14:24:13 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/18 16:11:35 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	draw_player(&game, game.x_pos, game.y_pos);
 	if (game.mlx)
 	{
-		ft_hooks(&game);
+		mlx_loop_hook(game.mlx, handle_input, &game);
 		mlx_loop(game.mlx);
 	}
 	free_split(game.two_d_map);

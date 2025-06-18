@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/12 14:23:48 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/18 18:00:17 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@
 # define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
 # define INT_MAX 2147483647
-# define WALK_SPEED 2
+# define WALK_SPEED 4
 # define TURN_SPEED 4.0
 
 
@@ -70,6 +70,7 @@ typedef struct s_game
 	int			invalid_map;
 	char		**two_d_map;
 	char		**two_d_map_check;
+	bool		should_refresh;
 	uint32_t	floor_colour;
 	uint32_t	ceiling_colour;
 	mlx_t		*mlx;
@@ -99,7 +100,8 @@ void	find_and_validate_player(t_game *game);
 int		count_lines(char **map);
 
 // executing/move.c
-void	ft_hooks(t_game *game);
+void	handle_input(void *param);
+
 // void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 // executing/display.c
