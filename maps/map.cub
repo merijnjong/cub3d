@@ -3,7 +3,7 @@ SO ./textures/grass2.png
 WE ./textures/stone2.png
 EA ./textures/grass2.png
 
-C 139,69,19
+C 139, 69, 19
 F 135, 206, 235
 
 111111
