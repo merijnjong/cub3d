@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:40:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/18 16:36:24 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/18 20:05:11 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ void	draw_background(t_game *game, int color_1, int color_2)
 
 void	draw_map(t_game *game, int i, int j)
 {
-	game->map = mlx_new_image(game->mlx, game->map_width * BLOCK_SIZE ,
+	game->map = mlx_new_image(game->mlx, game->map_width * BLOCK_SIZE,
 			game->map_height * BLOCK_SIZE);
 	while (game->two_d_map && game->two_d_map[i])
 	{
@@ -186,7 +186,7 @@ void	draw_game_line(t_game *game, int wall_height, int screen_x,
 		if (y < 0 || y > SCREEN_HEIGHT)
 		{
 			y++;
-			continue;
+			continue ;
 		}
 		tex_y = (y - top) * tex->height / wall_height;
 		pixel_index = tex_y * tex->width + tex_x;

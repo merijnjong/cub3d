@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 18:04:22 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/18 20:05:30 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,6 @@
 # define WALK_SPEED 2
 # define TURN_SPEED 4.0
 
-
 typedef struct s_line_data_t
 {
 	int	x1;
@@ -58,6 +57,50 @@ typedef struct s_line_data_t
 	int	y2;
 	int	dy;
 }	t_line_data;
+
+// typedef struct s_gamefield
+// {
+// 	const double	half_fov;
+// 	const double	angle_start;
+// 	const double	delta_angle;
+// 	int				screen_x;
+// 	double			ray_angle;
+// 	double			rad;
+// 	double			ray_dir_x;
+// 	double			ray_dir_y;
+// 	bool			was_vertical;
+// 	double			hit_x;
+// 	double			hit_y;
+// 	double			perp_dist;
+// 	int				wall_h;
+// 	double			hit_offset;
+// 	int				tex_x;
+// }	t_gamefield;
+
+// typedef struct s_game_line
+// {
+// 	mlx_image_t	*tex;
+// 	int			mid;
+// 	int			half_h;
+// 	int			top;
+// 	int			bottom;
+// 	int			y;
+// 	int			tex_y;
+// 	int			pixel_index;
+// 	int			byte_offset;
+// 	uint8_t		*p;
+// 	uint8_t		r;
+// 	uint8_t		g;
+// 	uint8_t		b;
+// 	uint8_t		a;
+// 	uint32_t	px;
+// 	uint32_t	color;
+// 	int			wall_height;
+// 	int			screen_x;
+// 	bool		hit_vertical;
+// 	double		ray_dir_x;
+// 	double		ray_dir_y;
+// }	t_game_line;
 
 typedef struct s_game
 {
