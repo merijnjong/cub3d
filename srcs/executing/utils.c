@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:40:58 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/12 13:41:18 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/19 19:49:01 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,4 +47,20 @@ bool	is_alpha(char c)
 	if ((c >= 97 && c <= 122) || (c >= 65 && c <= 90))
 		return (true);
 	return (false);
+}
+
+void	clear_image(mlx_image_t *img)
+{
+	uint32_t	*pixels;
+	int			total_pixels;
+	int			i;
+
+	i = 0;
+	total_pixels = img->width * img->height;
+	pixels = (uint32_t *)img->pixels;
+	while (i < total_pixels)
+	{
+		pixels[i] = 0x00000000;
+		i++;
+	}
 }

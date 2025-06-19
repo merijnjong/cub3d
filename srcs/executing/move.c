@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 19:52:51 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/19 19:49:41 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,10 @@
 
 void	refresh_frame(t_game *game)
 {
-	mlx_delete_image(game->mlx, game->gamefield);
+	clear_image(game->gamefield);
 	draw_gamefield(game);
-	mlx_image_to_window(game->mlx, game->map, 0, 0);
-	mlx_delete_image(game->mlx, game->player);
-	draw_player(game, game->x_pos, game->y_pos);
+	game->player->instances[0].x = game->x_pos;
+	game->player->instances[0].y = game->y_pos;
 	return ;
 }
 

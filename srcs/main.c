@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 16:11:35 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/19 19:44:12 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,15 @@ void	initialise(t_game *game)
 	make_image(game);
 }
 
+void	put_images_to_window(t_game *game)
+{
+	mlx_image_to_window(game->mlx, game->background, 0, 0);
+	mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
+	mlx_image_to_window(game->mlx, game->map, 0, 0);
+	mlx_image_to_window(game->mlx, game->player, game->x_pos, game->y_pos);
+	return ;
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -52,9 +61,11 @@ int	main(int argc, char **argv)
 	while (game.two_d_map[game.map_height])
 		game.map_height++;
 	draw_background(&game, game.floor_colour, game.ceiling_colour);
+	game.gamefield = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	draw_gamefield(&game);
 	draw_map(&game, 0, 0);
 	draw_player(&game, game.x_pos, game.y_pos);
+	put_images_to_window(&game);
 	if (game.mlx)
 	{
 		mlx_loop_hook(game.mlx, handle_input, &game);

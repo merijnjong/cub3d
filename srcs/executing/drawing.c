@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:40:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/18 20:05:11 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/19 19:44:56 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ void	draw_gamefield(t_game *game)
 	double			hit_offset;
 	int				tex_x;
 
-	game->gamefield = mlx_new_image(game->mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	screen_x = 0;
 	while (screen_x < SCREEN_WIDTH)
 	{
@@ -54,7 +53,6 @@ void	draw_gamefield(t_game *game)
 		}
 		screen_x++;
 	}
-	mlx_image_to_window(game->mlx, game->gamefield, 0, 0);
 }
 
 void	draw_background(t_game *game, int color_1, int color_2)
@@ -87,7 +85,6 @@ void	draw_background(t_game *game, int color_1, int color_2)
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->background, 0, 0);
 }
 
 void	draw_map(t_game *game, int i, int j)
@@ -115,7 +112,6 @@ void	draw_map(t_game *game, int i, int j)
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->map, 0, 0);
 }
 
 void	draw_player(t_game *game, int x, int y)
@@ -123,6 +119,8 @@ void	draw_player(t_game *game, int x, int y)
 	int	i;
 	int	j;
 
+	(void)(x);
+	(void)(y);
 	game->player = mlx_new_image(game->mlx, 10, 10);
 	if (!game->player)
 		return ;
@@ -137,7 +135,6 @@ void	draw_player(t_game *game, int x, int y)
 		}
 		i++;
 	}
-	mlx_image_to_window(game->mlx, game->player, x, y);
 }
 
 void	draw_game_line(t_game *game, int wall_height, int screen_x,

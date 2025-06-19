@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 20:05:30 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/19 19:49:58 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +166,7 @@ double		clamp(double v, double lo, double hi);
 // executing/utils.c
 void	my_pixel_put(mlx_image_t *img, int x, int y, int color);
 bool	is_alpha(char c);
+void	clear_image(mlx_image_t *img);
 
 // executing/execution.c
 void		exit_game(t_game *game);
