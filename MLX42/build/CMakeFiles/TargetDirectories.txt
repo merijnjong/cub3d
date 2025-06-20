@@ -1,7 +1,7 @@
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/mlx42.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/edit_cache.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/rebuild_cache.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/list_install_components.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/install.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/install/local.dir
-/sgoinfre/dkros/cubed/MLX42/build/CMakeFiles/install/strip.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/mlx42.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/list_install_components.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/install.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/install/local.dir
+/mnt/c/Users/merij/Documents/cub3d/MLX42/build/CMakeFiles/install/strip.dir

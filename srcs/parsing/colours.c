@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colours.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:40:24 by mjong             #+#    #+#             */
-/*   Updated: 2025/04/18 16:49:28 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/20 16:50:11 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ uint32_t	parse_rgb_string(char *rgb_str)
 	return (make_colour(r, g, b));
 }
 
-void	extract_colour(t_game *game, char *line)
+void	extract_colour(t_game *game, char *line, t_tex_col *col)
 {
 	char	*rgb_start;
 	int		i;
@@ -51,12 +51,16 @@ void	extract_colour(t_game *game, char *line)
 		i++;
 	rgb_start = line + i;
 	if (line[0] == 'C')
-		game->ceiling_colour = parse_rgb_string(rgb_start);
-	else if (line[0] == 'F')
-		game->floor_colour = parse_rgb_string(rgb_start);
-	else
 	{
-		ft_printf("Error: unknown colour identifier '%c'\n", line[0]);
-		exit(1);
+		if (col->c++)
+			exit(ft_printf(COL_ERROR));
+		game->ceiling_colour = parse_rgb_string(rgb_start);
 	}
+	else if (line[0] == 'F')
+	{
+		if (col->f++)
+			exit(ft_printf(COL_ERROR));
+		game->floor_colour = parse_rgb_string(rgb_start);
+	}
+	game->tex_col_check++;
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/05/22 17:25:10 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/20 16:48:59 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,4 +94,33 @@ void	assign_texture(t_game *game, char *line)
 	find_texture(game, split, id, path_trimmed);
 	free(path_trimmed);
 	free_split(split);
+}
+
+void	check_texture_line(t_game *game, char *line, t_tex_col *tex)
+{
+	if (ft_strncmp(line, "NO", 2) == 0)
+	{
+		if (tex->no++)
+			exit(ft_printf(TEX_ERROR));
+		assign_texture(game, line);
+	}
+	else if (ft_strncmp(line, "SO", 2) == 0)
+	{
+		if (tex->so++)
+			exit(ft_printf(TEX_ERROR));
+		assign_texture(game, line);
+	}
+	else if (ft_strncmp(line, "WE", 2) == 0)
+	{
+		if (tex->we++)
+			exit(ft_printf(TEX_ERROR));
+		assign_texture(game, line);
+	}
+	else if (ft_strncmp(line, "EA", 2) == 0)
+	{
+		if (tex->ea++)
+			exit(ft_printf(TEX_ERROR));
+		assign_texture(game, line);
+	}
+	game->tex_col_check++;
 }

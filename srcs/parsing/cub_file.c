@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:32:14 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/12 13:22:13 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/20 16:47:13 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,8 @@ char	*join_lines(char **lines)
 
 int	tex_col_check(t_game *game, char **lines)
 {
-	int	i;
+	t_tex_col	tex_col = {0};
+	int			i;
 
 	i = 0;
 	while (lines[i])
@@ -52,15 +53,9 @@ int	tex_col_check(t_game *game, char **lines)
 			|| ft_strncmp(lines[i], "SO", 2) == 0
 			|| ft_strncmp(lines[i], "WE", 2) == 0
 			|| ft_strncmp(lines[i], "EA", 2) == 0)
-		{
-			assign_texture(game, lines[i]);
-			game->tex_col_check++;
-		}
+			check_texture_line(game, lines[i], &tex_col);
 		else if (lines[i][0] == 'F' || lines[i][0] == 'C')
-		{
-			extract_colour(game, lines[i]);
-			game->tex_col_check++;
-		}
+			extract_colour(game, lines[i], &tex_col);
 		else if (lines[i][0] == '1' || lines[i][0] == '0' || lines[i][0] == ' ')
 			break ;
 		i++;

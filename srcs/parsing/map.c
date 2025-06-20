@@ -3,68 +3,62 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/18 17:52:55 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/20 17:18:08 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-int	has_excess_trailing_walls(char **map)
+int	has_vertical_spike(t_game *game)
 {
-	int	i = 0;
-	int	standalone_1_count = 0;
-	int	found_main_map = 0;
+	int	*col_heights;
+	int	x;
+	int	y;
+	int	total;
+	int	avg;
+	int	threshold;
 
-	while (map[i])
+	col_heights = ft_calloc(game->map_width, sizeof(int));
+	if (!col_heights)
+		return (1);
+	y = -1;
+	while (++y < game->map_height)
 	{
-		char	*line = map[i];
-
-		int	j = 0;
-		int	has_other_than_wall = 0;
-
-		while (line[j])
+		x = -1;
+		while (++x < (int)ft_strlen(game->two_d_map[y]))
 		{
-			if (line[j] == '0' || line[j] == 'N' || line[j] == 'S' ||
-				line[j] == 'E' || line[j] == 'W')
-			{
-				has_other_than_wall = 1;
-				break ;
-			}
-			j++;
+			if (game->two_d_map[y][x] != ' ' && game->two_d_map[y][x] != '\t')
+				col_heights[x]++;
 		}
-		if (has_other_than_wall)
-			found_main_map = 1;
-		else if (found_main_map)
-		{
-			j = 0;
-			while (line[j])
-			{
-				if (line[j] != '1' && line[j] != ' ' && line[j] != '\t')
-					return (1);
-				j++;
-			}
-			standalone_1_count++;
-			if (standalone_1_count > 1)
-				return (1);
-		}
-		i++;
 	}
-	return (0);
+	total = 0;
+	x = -1;
+	while (++x < game->map_width)
+		total += col_heights[x];
+	avg = total / game->map_width;
+	threshold = avg + 3;
+	x = -1;
+	while (++x < game->map_width)
+	{
+		if (col_heights[x] > threshold)
+			return (free(col_heights), 1);
+	}
+	return (free(col_heights), 0);
 }
 
-int	has_horizontal_spike(char **map)
+int	has_horizontal_spike(t_game *game)
 {
 	int	i = 0;
 	int	total_len = 0;
 	int	line_count = 0;
 	int	len;
 
-	while (map[i])
+	while (game->two_d_map[i])
 	{
-		len = ft_strlen(map[i]);
+		len = ft_strlen(game->two_d_map[i]);
 		total_len += len;
 		line_count++;
 		i++;
@@ -74,11 +68,11 @@ int	has_horizontal_spike(char **map)
 	int	avg_len = total_len / line_count;
 	int	max_allowed = avg_len + 3;
 	i = 0;
-	while (map[i])
+	while (game->two_d_map[i])
 	{
-		len = ft_strlen(map[i]);
+		len = ft_strlen(game->two_d_map[i]);
 		if (len > max_allowed)
-			return (1);
+			game->invalid_map = 1;
 		i++;
 	}
 	return (0);
@@ -163,7 +157,7 @@ void	count_map_dimensions(t_game *game)
 	pad_map_lines(game->two_d_map_check, game->map_width);
 	find_and_validate_player(game);
 	flood_fill(game, game->x_pos / BLOCK_SIZE, game->y_pos / BLOCK_SIZE);
-	if (game->invalid_map == 1 || has_excess_trailing_walls(game->two_d_map) || has_horizontal_spike(game->two_d_map))
+	if (game->invalid_map == 1 || has_vertical_spike(game) || has_horizontal_spike(game))
 	{
 		ft_printf(FLOOD_FILL_ERROR);
 		exit(1);

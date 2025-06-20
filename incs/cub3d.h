@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/19 19:49:58 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/20 17:11:33 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,18 @@
 # define FLOOD_FILL_ERROR "\033[1;31mError: Invalid map\
 	\nMake sure your map is\n1. Enclosed by walls (1)\
 	\n2. Has at least one player position (N, E, S or W)\
-	\n3. Is completely filled out inside the walls (1) by floors (0)\n\033[0m"
+	\n3. Is completely filled out inside the walls (1) by floors (0)\
+	\n4. Doesn't have any vertical or horizontal spikes\n\033[0m"
 # define PLAYER_ERROR "\033[1;31mError: Player is on the edge of the map or there is no player\
 	\nMake sure your player exists and is within map bounds\n\033[0m"
 # define TEX_COL_ERROR "\033[1;31mError: Missing textures or colours\
 	\nMake sure your .cub file has all the required textures and colours \
 (NO, SO, WE, EA) and (F, C)\n\033[0m"
-# define TEX_ERROR "\033[1;31mError: Missing textures\
-	\nMake sure your .cub file has all the required textures \
+# define TEX_ERROR "\033[1;31mError: Duplicate textures\
+	\nMake sure your .cub file has all the required textures and no diplucates \
 (NO, SO, WE, EA)\n\033[0m"
-# define COL_ERROR "\033[1;31mError: Missing colours\
-	\nMake sure your .cub file has all the required colours (F, C)\n\033[0m"
+# define COL_ERROR "\033[1;31mError: Duplicate colours\
+	\nMake sure your .cub file has all the required colours and no diplucates (F, C)\n\033[0m"
 # define SCREEN_WIDTH 1600
 # define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
@@ -57,6 +58,16 @@ typedef struct s_line_data_t
 	int	y2;
 	int	dy;
 }	t_line_data;
+
+typedef struct s_tex_col
+{
+	int no;
+	int so;
+	int we;
+	int ea;
+	int f;
+	int c;
+}	t_tex_col;
 
 // typedef struct s_gamefield
 // {
@@ -127,14 +138,15 @@ typedef struct s_game
 	mlx_image_t	*south;
 	mlx_image_t	*east;
 	mlx_image_t	*west;
+	t_tex_col	tex_col;
 	t_line_data	c;
 }	t_game;
 
 //srcs/parsing
-void	extract_colour(t_game *game, char *line);
+void	extract_colour(t_game *game, char *line, t_tex_col *col);
 void	parse_cub_file(t_game *game, char *filename);
 void	count_map_dimensions(t_game *game);
-void	assign_texture(t_game *game, char *line);
+void	check_texture_line(t_game *game, char *line, t_tex_col *tex);
 
 //srcs/parsing/parsing_utils.c
 int		has_internal_empty_line(char *str);
@@ -144,8 +156,6 @@ int		count_lines(char **map);
 
 // executing/move.c
 void	handle_input(void *param);
-
-// void	ft_hooks(mlx_key_data_t keydata, t_game *game);
 
 // executing/display.c
 void	make_image(t_game *game);
