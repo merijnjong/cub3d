@@ -6,7 +6,7 @@
 /*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:30:45 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 16:12:35 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/21 03:16:17 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ void	find_and_validate_player(t_game *game)
 			{
 				if (x == 0 || x == game->map_width - 1 || y == 0
 					|| y == game->map_height - 1)
-					exit(ft_printf(PLAYER_ERROR));
-				game->x_pos = x * BLOCK_SIZE + BLOCK_SIZE / 2;
-				game->y_pos = y * BLOCK_SIZE + BLOCK_SIZE / 2;
+					exit_and_print(1, PLAYER_ERROR);
+				game->x_pos = x * game->block_size + game->block_size / 2 - 5;
+				game->y_pos = y * game->block_size + game->block_size / 2 - 5;
 				return ;
 			}
 			x++;

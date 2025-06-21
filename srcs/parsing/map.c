@@ -6,7 +6,7 @@
 /*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 17:18:08 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/21 03:19:30 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	has_vertical_spike(t_game *game)
 	while (++x < game->map_width)
 		total += col_heights[x];
 	avg = total / game->map_width;
-	threshold = avg + 3;
+	threshold = avg + 10;
 	x = -1;
 	while (++x < game->map_width)
 	{
@@ -66,7 +66,7 @@ int	has_horizontal_spike(t_game *game)
 	if (line_count == 0)
 		return (0);
 	int	avg_len = total_len / line_count;
-	int	max_allowed = avg_len + 3;
+	int	max_allowed = avg_len + 10;
 	i = 0;
 	while (game->two_d_map[i])
 	{
@@ -154,12 +154,10 @@ void	count_map_dimensions(t_game *game)
 		y++;
 	}
 	game->map_height = y;
+	game->block_size = get_block_size(game);
 	pad_map_lines(game->two_d_map_check, game->map_width);
 	find_and_validate_player(game);
-	flood_fill(game, game->x_pos / BLOCK_SIZE, game->y_pos / BLOCK_SIZE);
+	flood_fill(game, game->x_pos / game->block_size, game->y_pos / game->block_size);
 	if (game->invalid_map == 1 || has_vertical_spike(game) || has_horizontal_spike(game))
-	{
-		ft_printf(FLOOD_FILL_ERROR);
-		exit(1);
-	}
+		exit_and_print(1, FLOOD_FILL_ERROR);
 }

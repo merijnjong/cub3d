@@ -3,25 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   calculations.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:42:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/12 13:33:40 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/21 02:45:00 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-bool	is_wall(t_game *g, int px, int py)
+bool	is_wall(t_game *game, int px, int py)
 {
 	int	map_x;
 	int	map_y;
 
-	map_x = px / BLOCK_SIZE;
-	map_y = py / BLOCK_SIZE;
-	if (!in_bounds(g, map_x, map_y))
+	map_x = px / game->block_size;
+	map_y = py / game->block_size;
+	if (!in_bounds(game, map_x, map_y))
 		return (true);
-	return (g->two_d_map[map_y][map_x] == '1');
+	return (game->two_d_map[map_y][map_x] == '1');
 }
 
 double	cast_ray(t_game *game, int start_x, int start_y,
@@ -47,29 +47,29 @@ double	cast_ray(t_game *game, int start_x, int start_y,
 		ray_angle += 2 * M_PI;
 	ray_dir_x = cos(ray_angle);
 	ray_dir_y = sin(ray_angle);
-	map_x = start_x / BLOCK_SIZE;
-	map_y = start_y / BLOCK_SIZE;
-	delta_dist_x = fabs(1.0 / ray_dir_x) * BLOCK_SIZE;
-	delta_dist_y = fabs(1.0 / ray_dir_y) * BLOCK_SIZE;
+	map_x = start_x / game->block_size;
+	map_y = start_y / game->block_size;
+	delta_dist_x = fabs(1.0 / ray_dir_x) * game->block_size;
+	delta_dist_y = fabs(1.0 / ray_dir_y) * game->block_size;
 	if (ray_dir_x < 0)
 	{
 		step_x = -1;
-		side_dist_x = ((start_x / (double)BLOCK_SIZE) - map_x) * delta_dist_x;
+		side_dist_x = ((start_x / (double)game->block_size) - map_x) * delta_dist_x;
 	}
 	else
 	{
 		step_x = 1;
-		side_dist_x = (map_x + 1.0 - (start_x / (double)BLOCK_SIZE)) * delta_dist_x;
+		side_dist_x = (map_x + 1.0 - (start_x / (double)game->block_size)) * delta_dist_x;
 	}
 	if (ray_dir_y < 0)
 	{
 		step_y = -1;
-		side_dist_y = ((start_y / (double)BLOCK_SIZE) - map_y) * delta_dist_y;
+		side_dist_y = ((start_y / (double)game->block_size) - map_y) * delta_dist_y;
 	}
 	else
 	{
 		step_y = 1;
-		side_dist_y = (map_y + 1.0 - (start_y / (double)BLOCK_SIZE)) * delta_dist_y;
+		side_dist_y = (map_y + 1.0 - (start_y / (double)game->block_size)) * delta_dist_y;
 	}
 	while (1)
 	{

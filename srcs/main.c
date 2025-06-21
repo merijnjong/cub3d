@@ -3,24 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/19 19:44:12 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/21 03:11:22 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
+
+int get_block_size(t_game *game)
+{
+	if (game->map_height >= game->map_width)
+		return (game->block_size = (SCREEN_HEIGHT / game->map_height) / 2);
+	else
+		return (game->block_size = (SCREEN_WIDTH / game->map_width) / 2);
+}
 
 void	initialise(t_game *game)
 {
 	game->x_pos = 0;
 	game->y_pos = 0;
 	game->dir = 270;
+	game->invalid_map = 0;
 	game->tex_col_check = 0;
 	game->map_width = 0;
 	game->map_height = 0;
-	game->invalid_map = 0;
+	game->block_size = 20;
 	game->two_d_map = NULL;
 	game->two_d_map_check = NULL;
 	game->floor_colour = 0;
@@ -52,10 +61,7 @@ int	main(int argc, char **argv)
 	t_game	game;
 
 	if (!argv[1] || argc > 2 || cub_check(argv[1]))
-	{
-		ft_printf(INPUT_ERROR);
-		exit(1);
-	}
+		return (ft_printf(INPUT_ERROR), 1);
 	initialise(&game);
 	parse_cub_file(&game, argv[1]);
 	while (game.two_d_map[game.map_height])

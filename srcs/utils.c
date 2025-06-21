@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 15:04:32 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/06 15:48:29 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/21 03:05:07 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,11 @@ void	free_split(char **arr)
 		i++;
 	}
 	free(arr);
+}
+
+
+void exit_and_print(int code, char *message)
+{
+	ft_printf(message);
+	exit(code);
 }

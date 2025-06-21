@@ -6,7 +6,7 @@
 /*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 17:11:33 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/21 03:55:32 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@
 # define BLOCK_SIZE 20
 # define INT_MAX 2147483647
 # define WALK_SPEED 2
-# define TURN_SPEED 4.0
+# define TURN_SPEED 2
 
 typedef struct s_line_data_t
 {
@@ -118,10 +118,11 @@ typedef struct s_game
 	int			x_pos;
 	int			y_pos;
 	int			dir;
-	int			tex_col_check;
 	int			map_width;
 	int			map_height;
+	int			block_size;
 	int			invalid_map;
+	int			tex_col_check;
 	char		**two_d_map;
 	char		**two_d_map_check;
 	bool		should_refresh;
@@ -141,6 +142,8 @@ typedef struct s_game
 	t_tex_col	tex_col;
 	t_line_data	c;
 }	t_game;
+
+
 
 //srcs/parsing
 void	extract_colour(t_game *game, char *line, t_tex_col *col);
@@ -188,5 +191,9 @@ void	print_dbl_ptr(char **ptr);
 void	free_split(char **arr);
 void	exit_free(char **lines, char *content, const char *msg);
 void	assign_maps(t_game *game, char **split_tmp);
+void	exit_and_print(int code, char *message);
+int		get_block_size(t_game *game);
+
+
 
 #endif

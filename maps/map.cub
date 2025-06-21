@@ -1,6 +1,6 @@
 NO ./textures/stone2.png
 SO ./textures/grass2.png
-EA ./textures/grass2.png
+EA ./textures/grass_block.png
 WE ./textures/stone2.png
 
 C 139, 69, 19

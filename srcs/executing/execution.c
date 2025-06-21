@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/12 13:41:40 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/21 02:45:19 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,8 +58,8 @@ void	set_player_position(t_game *game, char c, int i, int j)
 		printf("Invalid character found\n");
 		exit_game(game);
 	}
-	game->x_pos = i * BLOCK_SIZE;
-	game->y_pos = j * BLOCK_SIZE;
+	game->x_pos = i * game->block_size;
+	game->y_pos = j * game->block_size;
 }
 
 void	exit_game(t_game *game)

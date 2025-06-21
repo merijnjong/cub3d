@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   drawing.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:40:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/19 19:44:56 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/21 02:45:14 by merijnjong       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,12 @@ void	draw_gamefield(t_game *game)
 				ray_angle, 500, &was_vertical, &hit_x, &hit_y);
 		if (perp_dist > 0.0)
 		{
-			wall_h = (int)((BLOCK_SIZE * SCREEN_HEIGHT) / perp_dist);
+			wall_h = (int)((game->block_size * SCREEN_HEIGHT) / perp_dist);
 			if (was_vertical)
-				hit_offset = fmod(hit_y, BLOCK_SIZE);
+				hit_offset = fmod(hit_y, game->block_size);
 			else
-				hit_offset = fmod(hit_x, BLOCK_SIZE);
-			tex_x = (int)(hit_offset / BLOCK_SIZE * game->west->width);
+				hit_offset = fmod(hit_x, game->block_size);
+			tex_x = (int)(hit_offset / game->block_size * game->west->width);
 			draw_game_line(game, wall_h, screen_x,
 				tex_x, was_vertical, ray_dir_x, ray_dir_y);
 		}
@@ -89,25 +89,25 @@ void	draw_background(t_game *game, int color_1, int color_2)
 
 void	draw_map(t_game *game, int i, int j)
 {
-	game->map = mlx_new_image(game->mlx, game->map_width * BLOCK_SIZE,
-			game->map_height * BLOCK_SIZE);
+	game->map = mlx_new_image(game->mlx, game->map_width * game->block_size,
+			game->map_height * game->block_size);
 	while (game->two_d_map && game->two_d_map[i])
 	{
 		j = 0;
 		while (game->two_d_map[i][j])
 		{
 			if (game->two_d_map[i][j] == '1')
-				draw_square(game, (j * BLOCK_SIZE),
-					(i * BLOCK_SIZE), BLOCK_SIZE, 0x000000FF);
+				draw_square(game, (j * game->block_size),
+					(i * game->block_size), game->block_size, 0x000000FF);
 			else if (game->two_d_map[i][j] == ' ')
-				draw_square(game, (j * BLOCK_SIZE),
-					(i * BLOCK_SIZE), BLOCK_SIZE, 0x00000000);
+				draw_square(game, (j * game->block_size),
+					(i * game->block_size), game->block_size, 0x00000000);
 			else if (is_alpha(game->two_d_map[i][j]))
-				draw_square(game, (j * BLOCK_SIZE),
-					(i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
+				draw_square(game, (j * game->block_size),
+					(i * game->block_size), game->block_size, 0XFFFFFFFF);
 			else
-				draw_square(game, (j * BLOCK_SIZE),
-					(i * BLOCK_SIZE), BLOCK_SIZE, 0XFFFFFFFF);
+				draw_square(game, (j * game->block_size),
+					(i * game->block_size), game->block_size, 0XFFFFFFFF);
 			j++;
 		}
 		i++;
