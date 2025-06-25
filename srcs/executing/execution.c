@@ -3,23 +3,25 @@
 /*                                                        :::      ::::::::   */
 /*   execution.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 02:45:19 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 15:02:06 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-mlx_image_t	*draw_square(t_game *data, int x, int y, int size, int color)
+mlx_image_t	*draw_square(t_game *data, int x, int y, int color)
 {
 	int	i;
 	int	j;
+	int	size;
 
 	if (!data->map)
 		return (NULL);
 	i = 0;
+	size = data->block_size;
 	while (i < (size - 1))
 	{
 		j = 0;

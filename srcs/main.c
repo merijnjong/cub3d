@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 03:11:22 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 14:42:01 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../incs/cub3d.h"
 
-int get_block_size(t_game *game)
+int	get_block_size(t_game *game)
 {
 	if (game->map_height >= game->map_width)
 		return (game->block_size = (SCREEN_HEIGHT / game->map_height) / 2);

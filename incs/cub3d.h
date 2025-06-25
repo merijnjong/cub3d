@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 03:55:32 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 15:35:53 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@
 	\nMake sure your .cub file has all the required textures and no diplucates \
 (NO, SO, WE, EA)\n\033[0m"
 # define COL_ERROR "\033[1;31mError: Duplicate colours\
-	\nMake sure your .cub file has all the required colours and no diplucates (F, C)\n\033[0m"
+	\nMake sure your .cub file has all the required colours \
+	and no diplucates (F, C)\n\033[0m"
 # define SCREEN_WIDTH 1600
 # define SCREEN_HEIGHT 1000
 # define BLOCK_SIZE 20
@@ -61,57 +62,62 @@ typedef struct s_line_data_t
 
 typedef struct s_tex_col
 {
-	int no;
-	int so;
-	int we;
-	int ea;
-	int f;
-	int c;
+	int	no;
+	int	so;
+	int	we;
+	int	ea;
+	int	f;
+	int	c;
 }	t_tex_col;
 
-// typedef struct s_gamefield
-// {
-// 	const double	half_fov;
-// 	const double	angle_start;
-// 	const double	delta_angle;
-// 	int				screen_x;
-// 	double			ray_angle;
-// 	double			rad;
-// 	double			ray_dir_x;
-// 	double			ray_dir_y;
-// 	bool			was_vertical;
-// 	double			hit_x;
-// 	double			hit_y;
-// 	double			perp_dist;
-// 	int				wall_h;
-// 	double			hit_offset;
-// 	int				tex_x;
-// }	t_gamefield;
+typedef struct s_ray
+{
+	double	dir_x;
+	double	dir_y;
+	double	delta_x;
+	double	delta_y;
+	double	side_x;
+	double	side_y;
+	int		step_x;
+	int		step_y;
+	int		map_x;
+	int		map_y;
+	bool	side;
 
-// typedef struct s_game_line
-// {
-// 	mlx_image_t	*tex;
-// 	int			mid;
-// 	int			half_h;
-// 	int			top;
-// 	int			bottom;
-// 	int			y;
-// 	int			tex_y;
-// 	int			pixel_index;
-// 	int			byte_offset;
-// 	uint8_t		*p;
-// 	uint8_t		r;
-// 	uint8_t		g;
-// 	uint8_t		b;
-// 	uint8_t		a;
-// 	uint32_t	px;
-// 	uint32_t	color;
-// 	int			wall_height;
-// 	int			screen_x;
-// 	bool		hit_vertical;
-// 	double		ray_dir_x;
-// 	double		ray_dir_y;
-// }	t_game_line;
+}	t_ray;
+
+typedef struct s_ray_input
+{
+	int		start_x;
+	int		start_y;
+	double	angle_deg;
+	int		max_distance;
+}	t_ray_input;
+
+typedef struct s_ray_hit
+{
+	bool	vertical;
+	double	x;
+	double	y;
+}	t_ray_hit;
+
+typedef struct s_col_info
+{
+	int		wall_h;
+	int		tex_x;
+	double	dir_x;
+	double	dir_y;
+}	t_col_info;
+
+typedef struct s_line_info
+{
+	int		wall_h;
+	int		screen_x;
+	int		tex_x;
+	bool	hit_vertical;
+	double	dir_x;
+	double	dir_y;
+}	t_line_info;
 
 typedef struct s_game
 {
@@ -143,57 +149,70 @@ typedef struct s_game
 	t_line_data	c;
 }	t_game;
 
-
-
 //srcs/parsing
-void	extract_colour(t_game *game, char *line, t_tex_col *col);
-void	parse_cub_file(t_game *game, char *filename);
-void	count_map_dimensions(t_game *game);
-void	check_texture_line(t_game *game, char *line, t_tex_col *tex);
+void		extract_colour(t_game *game, char *line, t_tex_col *col);
+void		parse_cub_file(t_game *game, char *filename);
+void		count_map_dimensions(t_game *game);
+void		check_texture_line(t_game *game, char *line, t_tex_col *tex);
 
 //srcs/parsing/parsing_utils.c
-int		has_internal_empty_line(char *str);
-int		cub_check(char *line);
-void	find_and_validate_player(t_game *game);
-int		count_lines(char **map);
+int			has_internal_empty_line(char *str);
+int			cub_check(char *line);
+void		find_and_validate_player(t_game *game);
+int			count_lines(char **map);
 
 // executing/move.c
-void	handle_input(void *param);
+void		handle_input(void *param);
 
 // executing/display.c
-void	make_image(t_game *game);
+void		make_image(t_game *game);
 
 // executing/drawing.c
-void	draw_gamefield(t_game *game);
-void	draw_player(t_game *game, int x, int y);
-void	draw_map(t_game *game, int i, int j);
-void	draw_background(t_game *game, int color_1, int color_2);
+void		draw_gamefield(t_game *game);
+void		draw_player(t_game *game, int x, int y);
+void		draw_map(t_game *game, int i, int j);
+t_col_info	build_col_info(t_game *game, double perp, const t_ray_hit *hit,
+				double angle_rad);
+void		draw_background(t_game *game, int color_1, int color_2);
+
+// executing/drawing_utils.c
+void		trace_column(t_game *game, int x, double ray_angle);
+t_col_info	build_col_info(t_game *game, double perp, const t_ray_hit *hit,
+				double angle_rad);
+void		draw_background_2(mlx_image_t *img, int color, int i);
 
 // executing/calculations.c
 bool		is_wall(t_game *g, int px, int py);
-double		cast_ray(t_game *game, int start_x, int start_y, double angle_deg, int max_distance, bool *hit_vertical, double *hit_x, double *hit_y);
-void		draw_game_line(t_game *game, int wall_height, int screen_x, int tex_x, bool hit_vertical, double rayDirX, double rayDirY);
+double		cast_ray(t_game *g, t_ray_input in, t_ray_hit *hit);
 uint32_t	get_shaded_color(uint32_t pixel, int dist, bool hit_vertical);
 double		clamp(double v, double lo, double hi);
 
+// executing/game_drawing.c
+void		draw_game_line(t_game *g, t_line_info *c);
+
+// executing/ray_casting.c
+double		deg_to_rad(double deg);
+void		init_ray(t_ray *r, t_game *g, int sx, int sy);
+void		init_step(t_ray *r, t_game *g, int sx, int sy);
+void		perform_dda(t_ray *r, t_game *g);
+double		perp_distance(t_ray *r);
+
 // executing/utils.c
-void	my_pixel_put(mlx_image_t *img, int x, int y, int color);
-bool	is_alpha(char c);
-void	clear_image(mlx_image_t *img);
+void		my_pixel_put(mlx_image_t *img, int x, int y, int color);
+bool		is_alpha(char c);
+void		clear_image(mlx_image_t *img);
 
 // executing/execution.c
+mlx_image_t	*draw_square(t_game *data, int x, int y, int color);
 void		exit_game(t_game *game);
-mlx_image_t	*draw_square(t_game *data, int x, int y, int size, int color);
 bool		in_bounds(t_game *g, int x, int y);
 
 //srcs/utils.c
-void	print_dbl_ptr(char **ptr);
-void	free_split(char **arr);
-void	exit_free(char **lines, char *content, const char *msg);
-void	assign_maps(t_game *game, char **split_tmp);
-void	exit_and_print(int code, char *message);
-int		get_block_size(t_game *game);
-
-
+void		print_dbl_ptr(char **ptr);
+void		free_split(char **arr);
+void		exit_free(char **lines, char *content, const char *msg);
+void		assign_maps(t_game *game, char **split_tmp);
+void		exit_and_print(int code, char *message);
+int			get_block_size(t_game *game);
 
 #endif

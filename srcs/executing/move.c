@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   move.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 02:45:27 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 14:41:30 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,8 @@ void	move_player(t_game *game, double angle_rad, double angle_offset,
 		move_angle += M_PI;
 	temp_x_pos = (int)(cos(move_angle) * WALK_SPEED) + game->x_pos;
 	temp_y_pos = (int)(sin(move_angle) * WALK_SPEED) + game->y_pos;
-	if (!coll_detection(game, temp_x_pos, temp_y_pos, (game->block_size / 4 - 1)))
+	if (!coll_detection(game, temp_x_pos, temp_y_pos,
+			(game->block_size / 4 - 1)))
 	{
 		game->x_pos = temp_x_pos;
 		game->y_pos = temp_y_pos;

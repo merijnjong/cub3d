@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:32:14 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 16:47:13 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 14:46:22 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,10 +43,11 @@ char	*join_lines(char **lines)
 
 int	tex_col_check(t_game *game, char **lines)
 {
-	t_tex_col	tex_col = {0};
+	t_tex_col	tex_col;
 	int			i;
 
 	i = 0;
+	ft_bzero(&tex_col, sizeof(tex_col));
 	while (lines[i])
 	{
 		if (ft_strncmp(lines[i], "NO", 2) == 0

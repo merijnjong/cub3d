@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   calculations.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:42:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/21 02:45:00 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 14:55:47 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,84 +24,28 @@ bool	is_wall(t_game *game, int px, int py)
 	return (game->two_d_map[map_y][map_x] == '1');
 }
 
-double	cast_ray(t_game *game, int start_x, int start_y,
-				double angle_deg, int max_distance,
-				bool *hit_vertical, double *hit_x, double *hit_y)
+double	cast_ray(t_game *g, t_ray_input in, t_ray_hit *hit)
 {
-	double	ray_angle;
-	double	ray_dir_x;
-	double	ray_dir_y;
-	int		map_x;
-	int		map_y;
-	double	delta_dist_x;
-	double	delta_dist_y;
-	int		step_x;
-	int		step_y;
-	double	side_dist_x;
-	double	side_dist_y;
-	bool	side;
-	double	perp_dist;
+	t_ray	r;
+	double	dist;
+	double	ang_rad;
 
-	ray_angle = fmod(angle_deg * (M_PI / 180.0), 2 * M_PI);
-	if (ray_angle < 0)
-		ray_angle += 2 * M_PI;
-	ray_dir_x = cos(ray_angle);
-	ray_dir_y = sin(ray_angle);
-	map_x = start_x / game->block_size;
-	map_y = start_y / game->block_size;
-	delta_dist_x = fabs(1.0 / ray_dir_x) * game->block_size;
-	delta_dist_y = fabs(1.0 / ray_dir_y) * game->block_size;
-	if (ray_dir_x < 0)
-	{
-		step_x = -1;
-		side_dist_x = ((start_x / (double)game->block_size) - map_x) * delta_dist_x;
-	}
-	else
-	{
-		step_x = 1;
-		side_dist_x = (map_x + 1.0 - (start_x / (double)game->block_size)) * delta_dist_x;
-	}
-	if (ray_dir_y < 0)
-	{
-		step_y = -1;
-		side_dist_y = ((start_y / (double)game->block_size) - map_y) * delta_dist_y;
-	}
-	else
-	{
-		step_y = 1;
-		side_dist_y = (map_y + 1.0 - (start_y / (double)game->block_size)) * delta_dist_y;
-	}
-	while (1)
-	{
-		if (side_dist_x < side_dist_y)
-		{
-			side_dist_x += delta_dist_x;
-			map_x += step_x;
-			side = true;
-		}
-		else
-		{
-			side_dist_y += delta_dist_y;
-			map_y += step_y;
-			side = false;
-		}
-		if (!in_bounds(game, map_x, map_y)
-			|| game->two_d_map[map_y][map_x] == '1')
-			break ;
-	}
-	if (side)
-		perp_dist = side_dist_x - delta_dist_x;
-	else
-		perp_dist = side_dist_y - delta_dist_y;
-	if (perp_dist > (double)max_distance)
+	ang_rad = deg_to_rad(in.angle_deg);
+	r.dir_x = cos(ang_rad);
+	r.dir_y = sin(ang_rad);
+	init_ray(&r, g, in.start_x, in.start_y);
+	init_step(&r, g, in.start_x, in.start_y);
+	perform_dda(&r, g);
+	dist = perp_distance(&r);
+	if (dist > (double)in.max_distance)
 		return (-1.0);
-	if (hit_vertical)
-		*hit_vertical = side;
-	if (hit_x)
-		*hit_x = start_x + ray_dir_x * perp_dist;
-	if (hit_y)
-		*hit_y = start_y + ray_dir_y * perp_dist;
-	return (perp_dist);
+	if (hit)
+	{
+		hit->vertical = r.side;
+		hit->x = in.start_x + r.dir_x * dist;
+		hit->y = in.start_y + r.dir_y * dist;
+	}
+	return (dist);
 }
 
 double	clamp(double v, double lo, double hi)
