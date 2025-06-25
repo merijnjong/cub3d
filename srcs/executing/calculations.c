@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/10 16:42:18 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/25 14:55:47 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:20:23 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,26 +24,26 @@ bool	is_wall(t_game *game, int px, int py)
 	return (game->two_d_map[map_y][map_x] == '1');
 }
 
-double	cast_ray(t_game *g, t_ray_input in, t_ray_hit *hit)
+double	cast_ray(t_game *game, t_ray_input in, t_ray_hit *hit)
 {
-	t_ray	r;
+	t_ray	ray;
 	double	dist;
 	double	ang_rad;
 
 	ang_rad = deg_to_rad(in.angle_deg);
-	r.dir_x = cos(ang_rad);
-	r.dir_y = sin(ang_rad);
-	init_ray(&r, g, in.start_x, in.start_y);
-	init_step(&r, g, in.start_x, in.start_y);
-	perform_dda(&r, g);
-	dist = perp_distance(&r);
+	ray.dir_x = cos(ang_rad);
+	ray.dir_y = sin(ang_rad);
+	init_ray(&ray, game, in.start_x, in.start_y);
+	init_step(&ray, game, in.start_x, in.start_y);
+	perform_dda(&ray, game);
+	dist = perp_distance(&ray);
 	if (dist > (double)in.max_distance)
 		return (-1.0);
 	if (hit)
 	{
-		hit->vertical = r.side;
-		hit->x = in.start_x + r.dir_x * dist;
-		hit->y = in.start_y + r.dir_y * dist;
+		hit->vertical = ray.side;
+		hit->x = in.start_x + ray.dir_x * dist;
+		hit->y = in.start_y + ray.dir_y * dist;
 	}
 	return (dist);
 }

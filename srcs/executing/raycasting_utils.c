@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 13:40:51 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/25 14:55:26 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:17:15 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,63 +22,65 @@ double	deg_to_rad(double deg)
 	return (rad);
 }
 
-void	init_ray(t_ray *r, t_game *g, int sx, int sy)
+void	init_ray(t_ray *ray, t_game *game, int sx, int sy)
 {
-	r->map_x = sx / g->block_size;
-	r->map_y = sy / g->block_size;
-	r->delta_x = fabs(1.0 / r->dir_x) * g->block_size;
-	r->delta_y = fabs(1.0 / r->dir_y) * g->block_size;
+	ray->map_x = sx / game->block_size;
+	ray->map_y = sy / game->block_size;
+	ray->delta_x = fabs(1.0 / ray->dir_x) * game->block_size;
+	ray->delta_y = fabs(1.0 / ray->dir_y) * game->block_size;
 }
 
-void	init_step(t_ray *r, t_game *g, int sx, int sy)
+void	init_step(t_ray *ray, t_game *game, int sx, int sy)
 {
-	if (r->dir_x < 0)
+	if (ray->dir_x < 0)
 	{
-		r->step_x = -1;
-		r->side_x = ((sx / (double)g->block_size) - r->map_x) * r->delta_x;
+		ray->step_x = -1;
+		ray->side_x = ((sx / (double)game->block_size) - ray->map_x)
+			* ray->delta_x;
 	}
 	else
 	{
-		r->step_x = 1;
-		r->side_x = (r->map_x + 1.0
-				- (sx / (double)g->block_size)) * r->delta_x;
+		ray->step_x = 1;
+		ray->side_x = (ray->map_x + 1.0
+				- (sx / (double)game->block_size)) * ray->delta_x;
 	}
-	if (r->dir_y < 0)
+	if (ray->dir_y < 0)
 	{
-		r->step_y = -1;
-		r->side_y = ((sy / (double)g->block_size) - r->map_y) * r->delta_y;
+		ray->step_y = -1;
+		ray->side_y = ((sy / (double)game->block_size) - ray->map_y)
+			* ray->delta_y;
 	}
 	else
 	{
-		r->step_y = 1;
-		r->side_y = (r->map_y + 1.0
-				- (sy / (double)g->block_size)) * r->delta_y;
+		ray->step_y = 1;
+		ray->side_y = (ray->map_y + 1.0
+				- (sy / (double)game->block_size)) * ray->delta_y;
 	}
 }
 
-void	perform_dda(t_ray *r, t_game *g)
+void	perform_dda(t_ray *ray, t_game *game)
 {
-	while (in_bounds(g, r->map_x, r->map_y)
-		&& g->two_d_map[r->map_y][r->map_x] != '1')
+	while (in_bounds(game, ray->map_x, ray->map_y)
+		&& game->two_d_map[ray->map_y][ray->map_x] != '1')
 	{
-		if (r->side_x < r->side_y)
+		if (ray->side_x < ray->side_y)
 		{
-			r->side_x += r->delta_x;
-			r->map_x += r->step_x;
-			r->side = true;
+			ray->side_x += ray->delta_x;
+			ray->map_x += ray->step_x;
+			ray->side = true;
 		}
 		else
 		{
-			r->side_y += r->delta_y;
-			r->map_y += r->step_y;
-			r->side = false;
+			ray->side_y += ray->delta_y;
+			ray->map_y += ray->step_y;
+			ray->side = false;
 		}
 	}
 }
 
-double	perp_distance(t_ray *r)
+double	perp_distance(t_ray *ray)
 {
-	if (r->side)
-		return (r->side_x - r->delta_x);
-	return (r->side_y - r->delta_y);
+	if (ray->side)
+		return (ray->side_x - ray->delta_x);
+	return (ray->side_y - ray->delta_y);
 }

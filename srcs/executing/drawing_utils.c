@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 14:18:31 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/25 15:31:00 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:32:48 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void	trace_column(t_game *game, int x, double ray_angle)
 	in.start_x = game->x_pos;
 	in.start_y = game->y_pos;
 	in.angle_deg = ray_angle;
-	in.max_distance = 500;
+	in.max_distance = 1000;
 	perp = cast_ray(game, in, &hit);
 	if (perp <= 0.0)
 		return ;

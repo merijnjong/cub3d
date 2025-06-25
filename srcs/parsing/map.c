@@ -3,79 +3,50 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 03:19:30 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/25 17:37:04 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-int	has_vertical_spike(t_game *game)
-{
-	int	*col_heights;
-	int	x;
-	int	y;
-	int	total;
-	int	avg;
-	int	threshold;
-
-	col_heights = ft_calloc(game->map_width, sizeof(int));
-	if (!col_heights)
-		return (1);
-	y = -1;
-	while (++y < game->map_height)
-	{
-		x = -1;
-		while (++x < (int)ft_strlen(game->two_d_map[y]))
-		{
-			if (game->two_d_map[y][x] != ' ' && game->two_d_map[y][x] != '\t')
-				col_heights[x]++;
-		}
-	}
-	total = 0;
-	x = -1;
-	while (++x < game->map_width)
-		total += col_heights[x];
-	avg = total / game->map_width;
-	threshold = avg + 10;
-	x = -1;
-	while (++x < game->map_width)
-	{
-		if (col_heights[x] > threshold)
-			return (free(col_heights), 1);
-	}
-	return (free(col_heights), 0);
-}
-
 int	has_horizontal_spike(t_game *game)
 {
-	int	i = 0;
-	int	total_len = 0;
-	int	line_count = 0;
-	int	len;
+	int	row_lengths[256];
+	int	row_cnt;
+	int	avg_len;
+	int	limit;
+	int	spike;
 
-	while (game->two_d_map[i])
-	{
-		len = ft_strlen(game->two_d_map[i]);
-		total_len += len;
-		line_count++;
-		i++;
-	}
-	if (line_count == 0)
+	get_row_lengths(game, row_lengths, &row_cnt);
+	if (row_cnt == 0)
 		return (0);
-	int	avg_len = total_len / line_count;
-	int	max_allowed = avg_len + 10;
-	i = 0;
-	while (game->two_d_map[i])
-	{
-		len = ft_strlen(game->two_d_map[i]);
-		if (len > max_allowed)
-			game->invalid_map = 1;
-		i++;
-	}
-	return (0);
+	avg_len = average_int(row_lengths, row_cnt);
+	limit = avg_len + SPIKE_MARGIN;
+	spike = has_value_above(row_lengths, row_cnt, limit);
+	if (spike == 1)
+		game->invalid_map = 1;
+	return (spike);
+}
+
+int	has_vertical_spike(t_game *game)
+{
+	int	*heights;
+	int	avg;
+	int	limit;
+	int	spike;
+
+	heights = ft_calloc(game->map_width, sizeof(int));
+	if (!heights)
+		return (1);
+	count_column_heights(game, heights);
+	avg = average_int(heights, game->map_width);
+	limit = avg + SPIKE_MARGIN;
+	spike = has_value_above(heights, game->map_width, limit);
+	free(heights);
+	return (spike);
 }
 
 void	flood_fill(t_game *game, int x, int y)
@@ -157,7 +128,9 @@ void	count_map_dimensions(t_game *game)
 	game->block_size = get_block_size(game);
 	pad_map_lines(game->two_d_map_check, game->map_width);
 	find_and_validate_player(game);
-	flood_fill(game, game->x_pos / game->block_size, game->y_pos / game->block_size);
-	if (game->invalid_map == 1 || has_vertical_spike(game) || has_horizontal_spike(game))
+	flood_fill(game,
+		game->x_pos / game->block_size, game->y_pos / game->block_size);
+	if (game->invalid_map == 1 || has_vertical_spike(game)
+		|| has_horizontal_spike(game))
 		exit_and_print(1, FLOOD_FILL_ERROR);
 }

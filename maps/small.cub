@@ -1,0 +1,15 @@
+NO ./textures/stone2.png
+SO ./textures/grass2.png
+WE ./textures/stone_block.png
+EA ./textures/grass_block.png
+
+C 139,69,19
+F 135, 206, 235
+
+1111111111
+1N00000001
+1000000001
+1000000001
+1000000001
+1000000001
+1111111111

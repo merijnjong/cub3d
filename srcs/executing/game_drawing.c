@@ -6,13 +6,13 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:11:45 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/25 15:31:28 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:18:49 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-mlx_image_t	*choose_texture(t_game *g, bool vert,
+mlx_image_t	*choose_texture(t_game *game, bool vert,
 									double dx, double dy)
 {
 	mlx_image_t	*tex;
@@ -21,16 +21,16 @@ mlx_image_t	*choose_texture(t_game *g, bool vert,
 	if (vert == true)
 	{
 		if (dx > 0)
-			tex = g->west;
+			tex = game->west;
 		else
-			tex = g->east;
+			tex = game->east;
 	}
 	else
 	{
 		if (dy > 0)
-			tex = g->south;
+			tex = game->south;
 		else
-			tex = g->north;
+			tex = game->north;
 	}
 	return (tex);
 }
@@ -61,27 +61,27 @@ uint32_t	sample_tex_color(mlx_image_t *tex, int x, int y)
 	return (pixel);
 }
 
-void	draw_game_line(t_game *g, t_line_info *c)
+void	draw_game_line(t_game *game, t_line_info *line)
 {
 	mlx_image_t	*tex;
 	int			top;
 	int			bottom;
 	int			y;
 
-	tex = choose_texture(g, c->hit_vertical, c->dir_x, c->dir_y);
+	tex = choose_texture(game, line->hit_vertical, line->dir_x, line->dir_y);
 	if (tex == NULL)
 		return ;
-	get_column_bounds(c->wall_h, &top, &bottom);
+	get_column_bounds(line->wall_h, &top, &bottom);
 	y = top;
 	while (y < bottom)
 	{
 		if (y >= 0 && y <= SCREEN_HEIGHT)
 		{
-			my_pixel_put(g->gamefield, c->screen_x, y,
+			my_pixel_put(game->gamefield, line->screen_x, y,
 				get_shaded_color(
-					sample_tex_color(tex, c->tex_x,
-						(y - top) * tex->height / c->wall_h),
-					c->wall_h, c->hit_vertical));
+					sample_tex_color(tex, line->tex_x,
+						(y - top) * tex->height / line->wall_h),
+					line->wall_h, line->hit_vertical));
 		}
 		y++;
 	}

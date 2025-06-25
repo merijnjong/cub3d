@@ -6,40 +6,40 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/25 15:02:06 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:19:17 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../incs/cub3d.h"
 
-mlx_image_t	*draw_square(t_game *data, int x, int y, int color)
+mlx_image_t	*draw_square(t_game *game, int x, int y, int color)
 {
 	int	i;
 	int	j;
 	int	size;
 
-	if (!data->map)
+	if (!game->map)
 		return (NULL);
 	i = 0;
-	size = data->block_size;
+	size = game->block_size;
 	while (i < (size - 1))
 	{
 		j = 0;
 		while (j < (size - 1))
 		{
-			my_pixel_put(data->map, j + x, i + y, color);
+			my_pixel_put(game->map, j + x, i + y, color);
 			j++;
 		}
 		i++;
 	}
-	return (data->map);
+	return (game->map);
 }
 
-bool	in_bounds(t_game *g, int x, int y)
+bool	in_bounds(t_game *game, int x, int y)
 {
-	if (y < 0 || y >= g->map_height)
+	if (y < 0 || y >= game->map_height)
 		return (false);
-	if (x < 0 || x >= (int)ft_strlen(g->two_d_map[y]))
+	if (x < 0 || x >= (int)ft_strlen(game->two_d_map[y]))
 		return (false);
 	return (true);
 }

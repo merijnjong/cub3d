@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/25 15:35:53 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/25 17:37:46 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@
 # define INT_MAX 2147483647
 # define WALK_SPEED 2
 # define TURN_SPEED 2
+# define SPIKE_MARGIN 10
 
 typedef struct s_line_data_t
 {
@@ -160,6 +161,12 @@ int			has_internal_empty_line(char *str);
 int			cub_check(char *line);
 void		find_and_validate_player(t_game *game);
 int			count_lines(char **map);
+
+// srcs/spike_check_utils.c
+int			average_int(int *arr, int n);
+int			has_value_above(int *arr, int n, int limit);
+void		get_row_lengths(t_game *game, int *len_arr, int *row_count);
+void		count_column_heights(t_game *game, int *heights);
 
 // executing/move.c
 void		handle_input(void *param);
