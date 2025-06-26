@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 16:23:54 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:55:46 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	load_texture(mlx_t *mlx, mlx_image_t **image_slot, char *path)
 		exit(1);
 	}
 }
-
 
 void	find_texture(t_game *game, char **split, char *id,
 	char *path_trimmed)
