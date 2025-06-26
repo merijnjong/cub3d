@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 14:17:52 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:09:11 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ int	main(int argc, char **argv)
 	parse_cub_file(&game, argv[1]);
 	while (game.two_d_map[game.map_height])
 		game.map_height++;
-	draw_background(&game, game.floor_colour, game.ceiling_colour);
+	draw_background(&game, game.ceiling_colour, game.floor_colour);
 	game.gamefield = mlx_new_image(game.mlx, SCREEN_WIDTH, SCREEN_HEIGHT);
 	draw_gamefield(&game);
 	draw_map(&game, 0, 0);

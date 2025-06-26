@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub_file.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:32:14 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/25 14:46:22 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:36:20 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,12 @@ int	tex_col_check(t_game *game, char **lines)
 			extract_colour(game, lines[i], &tex_col);
 		else if (lines[i][0] == '1' || lines[i][0] == '0' || lines[i][0] == ' ')
 			break ;
+		else if (lines[i][0] != '\0' && !ft_isspacec(lines[i][0]))
+		{
+			ft_printf("\033[1;31mError: invalid identifier in line: \
+\"%s\"\n\033[0m", lines[i]);
+			exit(1);
+		}
 		i++;
 	}
 	return (i);
@@ -92,10 +98,12 @@ char	*read_cub_lines(char *filename)
 void	extract_and_validate_map(t_game *game, char **lines, char *file_content,
 		int start_idx)
 {
-	char	*map_start;
-	char	*map_str;
-	char	**split_tmp;
+	t_tex_col	tex_col;
+	char		*map_start;
+	char		*map_str;
+	char		**split_tmp;
 
+	ft_bzero(&tex_col, sizeof(tex_col));
 	map_start = ft_strnstr(file_content, lines[start_idx],
 			ft_strlen(file_content));
 	if (!map_start || has_internal_empty_line(map_start))
@@ -114,14 +122,14 @@ void	extract_and_validate_map(t_game *game, char **lines, char *file_content,
 	free(map_str);
 	if (!game->two_d_map || !game->two_d_map_check)
 		exit_free(lines, NULL, "Error: failed to duplicate map\n");
-	count_map_dimensions(game);
+	count_map_dimensions(game, &tex_col);
 }
 
 void	parse_cub_file(t_game *game, char *filename)
 {
-	char	*file_content;
-	char	**lines;
-	int		start_idx;
+	char		**lines;
+	char		*file_content;
+	int			start_idx;
 
 	file_content = read_cub_lines(filename);
 	if (!file_content)

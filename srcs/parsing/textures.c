@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   textures.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 15:21:28 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 16:48:59 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/26 16:23:54 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,11 @@ void	load_texture(mlx_t *mlx, mlx_image_t **image_slot, char *path)
 {
 	mlx_texture_t	*texture;
 
+	if (access(path, R_OK) != 0)
+	{
+		ft_printf("Error: cannot access texture file: %s\n", path);
+		exit(1);
+	}
 	texture = mlx_load_png(path);
 	if (!texture)
 	{
@@ -30,6 +35,7 @@ void	load_texture(mlx_t *mlx, mlx_image_t **image_slot, char *path)
 		exit(1);
 	}
 }
+
 
 void	find_texture(t_game *game, char **split, char *id,
 	char *path_trimmed)
