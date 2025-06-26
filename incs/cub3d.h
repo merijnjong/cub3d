@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 17:20:26 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 17:39:23 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,8 @@
 	\n2. Has at least one player position (N, E, S or W)\
 	\n3. Is completely filled out inside the walls (1) by floors (0)\
 	\n4. Doesn't have any vertical or horizontal spikes\n\033[0m"
-# define PLAYER_ERROR "\033[1;31mError: Player is on the edge of the map or there is no player\
-	\nMake sure your player exists and is within map bounds\n\033[0m"
+# define PLAYER_ERROR "\033[1;31mError: Player is on the edge of the map or there is no player or there are two players\
+	\nMake sure your map has one and that it is within map bounds\n\033[0m"
 # define TEX_COL_ERROR "\033[1;31mError: Missing textures or colours\
 	\nMake sure your .cub file has all the required textures and colours \
 (NO, SO, WE, EA) and (F, C)\n\033[0m"
@@ -68,6 +68,7 @@ typedef struct s_tex_col
 	int	ea;
 	int	f;
 	int	c;
+	int p;
 }	t_tex_col;
 
 typedef struct s_ray
@@ -153,14 +154,15 @@ typedef struct s_game
 //srcs/parsing
 void		extract_colour(t_game *game, char *line, t_tex_col *col);
 void		parse_cub_file(t_game *game, char *filename);
-void		count_map_dimensions(t_game *game);
+void		count_map_dimensions(t_game *game, t_tex_col *tex_col);
 void		check_texture_line(t_game *game, char *line, t_tex_col *tex);
 
 //srcs/parsing/parsing_utils.c
 int			has_internal_empty_line(char *str);
 int			cub_check(char *line);
-void		find_and_validate_player(t_game *game);
+void		find_and_validate_player(t_game *game, t_tex_col *tex_col);
 int			count_lines(char **map);
+int			validate_map_chars(t_game *game);
 
 // srcs/spike_check_utils.c
 int			average_int(int *arr, int n);

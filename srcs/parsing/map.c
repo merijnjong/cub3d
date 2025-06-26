@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   map.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/25 17:37:04 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:53:39 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,11 +106,11 @@ void	pad_map_lines(char **map, int width)
 	}
 }
 
-void	count_map_dimensions(t_game *game)
+void	count_map_dimensions(t_game *game, t_tex_col *tex_col)
 {
-	int	curr_len;
-	int	x;
-	int	y;
+	int			curr_len;
+	int			x;
+	int			y;
 
 	y = 0;
 	game->map_width = 0;
@@ -127,10 +127,10 @@ void	count_map_dimensions(t_game *game)
 	game->map_height = y;
 	game->block_size = get_block_size(game);
 	pad_map_lines(game->two_d_map_check, game->map_width);
-	find_and_validate_player(game);
+	find_and_validate_player(game, tex_col);
 	flood_fill(game,
 		game->x_pos / game->block_size, game->y_pos / game->block_size);
-	if (game->invalid_map == 1 || has_vertical_spike(game)
-		|| has_horizontal_spike(game))
+	if (validate_map_chars(game) || game->invalid_map == 1
+		|| has_vertical_spike(game) || has_horizontal_spike(game))
 		exit_and_print(1, FLOOD_FILL_ERROR);
 }
