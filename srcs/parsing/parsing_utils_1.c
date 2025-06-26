@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:30:45 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/21 03:16:17 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/26 16:10:40 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,19 @@ int	cub_check(char *line)
 	return (0);
 }
 
+static void	set_player_dir(t_game *game, char p)
+{
+	if (p == 'N')
+		game->dir = 270;
+	else if (p == 'E')
+		game->dir = 0;
+	else if (p == 'S')
+		game->dir = 90;
+	else if (p == 'W')
+		game->dir = 180;
+	return ;
+}
+
 void	find_and_validate_player(t_game *game)
 {
 	int	x;
@@ -72,6 +85,7 @@ void	find_and_validate_player(t_game *game)
 				if (x == 0 || x == game->map_width - 1 || y == 0
 					|| y == game->map_height - 1)
 					exit_and_print(1, PLAYER_ERROR);
+				set_player_dir(game, game->two_d_map[y][x]);
 				game->x_pos = x * game->block_size + game->block_size / 2 - 5;
 				game->y_pos = y * game->block_size + game->block_size / 2 - 5;
 				return ;
