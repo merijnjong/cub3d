@@ -1,5 +1,5 @@
 NAME    := cub3d
-CFLAGS  := -fsanitize=address -Wextra -Wall -Werror
+CFLAGS  := -Wextra -Wall -Werror
 LIBFT   := ./libft
 MLX     := ./MLX42
 BUILD   := $(MLX)/build
