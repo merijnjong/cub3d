@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 14:17:52 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:25:51 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,7 @@ int	main(int argc, char **argv)
 	if (game.mlx)
 	{
 		mlx_loop_hook(game.mlx, handle_input, &game);
+		mlx_close_hook(game.mlx, exit_game, &game);
 		mlx_loop(game.mlx);
 	}
 	free_split(game.two_d_map);

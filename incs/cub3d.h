@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 16:04:10 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:29:40 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -211,7 +211,7 @@ void		clear_image(mlx_image_t *img);
 
 // executing/execution.c
 mlx_image_t	*draw_square(t_game *data, int x, int y, int color);
-void		exit_game(t_game *game);
+void		exit_game(void *param);
 bool		in_bounds(t_game *g, int x, int y);
 
 //srcs/utils.c

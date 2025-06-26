@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/25 17:30:56 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:28:42 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	handle_input(void *param)
 	game->should_refresh = false;
 	angle_rad = game->dir * (M_PI / 180.0);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_ESCAPE))
-		exit_game(game);
+		exit_game((t_game *)game);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_LEFT))
 		change_direction(game, true);
 	if (mlx_is_key_down(game->mlx, MLX_KEY_RIGHT))
