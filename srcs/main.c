@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 17:10:49 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 17:35:19 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ void	put_images_to_window(t_game *game)
 	return ;
 }
 
+static void	set_walking_speed(t_game *game)
+{
+	game->walk_speed = game->block_size / 6;
+	if (game->walk_speed <= 2)
+		game->walk_speed = 2;
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -64,7 +71,7 @@ int	main(int argc, char **argv)
 		return (ft_printf(INPUT_ERROR), 1);
 	initialise(&game);
 	parse_cub_file(&game, argv[1]);
-	game.walk_speed = game.block_size / 6;
+	set_walking_speed(&game);
 	while (game.two_d_map[game.map_height])
 		game.map_height++;
 	draw_background(&game, game.floor_colour, game.ceiling_colour);
