@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   colours.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: merijnjong <merijnjong@student.42.fr>      +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/18 14:40:24 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/20 16:50:11 by merijnjong       ###   ########.fr       */
+/*   Updated: 2025/06/26 14:09:58 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,22 @@
 uint32_t	make_colour(int r, int g, int b)
 {
 	return ((r << 24) | (g << 16) | (b << 8) | 255);
+}
+
+int	is_valid_number(const char *str)
+{
+	int	i;
+
+	i = 0;
+	while (ft_isspacec(str[i]))
+		i++;
+	if (!ft_isdigit(str[i]))
+		return (0);
+	while (ft_isdigit(str[i]))
+		i++;
+	while (ft_isspacec(str[i]))
+		i++;
+	return (str[i] == '\0');
 }
 
 uint32_t	parse_rgb_string(char *rgb_str)
@@ -32,6 +48,9 @@ uint32_t	parse_rgb_string(char *rgb_str)
 	free(trimmed);
 	if (!rgb || !rgb[0] || !rgb[1] || !rgb[2] || rgb[3])
 		exit(ft_printf("Error: invalid RGB format\n"));
+	if (!is_valid_number(rgb[0]) || !is_valid_number(rgb[1])
+		|| !is_valid_number(rgb[2]))
+		exit(ft_printf("Error: RGB components must be numeric\n"));
 	r = ft_atoi(rgb[0]);
 	g = ft_atoi(rgb[1]);
 	b = ft_atoi(rgb[2]);
@@ -47,7 +66,12 @@ void	extract_colour(t_game *game, char *line, t_tex_col *col)
 	int		i;
 
 	i = 0;
-	while (line[i] && (ft_isalpha(line[i]) || ft_isspacec(line[i])))
+	while (ft_isspacec(line[i]))
+		i++;
+	if (!ft_isspacec(line[i + 1]))
+		exit(ft_printf("Error: invalid character after colour identifier\n"));
+	i++;
+	while (ft_isspacec(line[i]))
 		i++;
 	rgb_start = line + i;
 	if (line[0] == 'C')
