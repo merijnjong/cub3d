@@ -6,7 +6,11 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:22:43 by mjong             #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2025/06/26 16:09:11 by mjong            ###   ########.fr       */
+=======
+/*   Updated: 2025/06/26 16:25:51 by dkros            ###   ########.fr       */
+>>>>>>> ab1caa016fe44bfc7a6630f40b3295c9d7e738b5
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +79,7 @@ int	main(int argc, char **argv)
 	if (game.mlx)
 	{
 		mlx_loop_hook(game.mlx, handle_input, &game);
+		mlx_close_hook(game.mlx, exit_game, &game);
 		mlx_loop(game.mlx);
 	}
 	free_split(game.two_d_map);
