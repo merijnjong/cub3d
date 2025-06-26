@@ -3,17 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-<<<<<<< HEAD
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:30:45 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 16:28:58 by mjong            ###   ########.fr       */
-=======
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/04/16 16:30:45 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 16:10:40 by dkros            ###   ########.fr       */
->>>>>>> ab1caa016fe44bfc7a6630f40b3295c9d7e738b5
+/*   Updated: 2025/06/26 16:43:28 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +55,6 @@ int	cub_check(char *line)
 	return (0);
 }
 
-<<<<<<< HEAD
-void	find_and_validate_player(t_game *game, t_tex_col *tex_col)
-=======
 static void	set_player_dir(t_game *game, char p)
 {
 	if (p == 'N')
@@ -78,8 +68,7 @@ static void	set_player_dir(t_game *game, char p)
 	return ;
 }
 
-void	find_and_validate_player(t_game *game)
->>>>>>> ab1caa016fe44bfc7a6630f40b3295c9d7e738b5
+void	find_and_validate_player(t_game *game, t_tex_col *tex_col)
 {
 	int	x;
 	int	y;
@@ -96,12 +85,9 @@ void	find_and_validate_player(t_game *game)
 				if (x == 0 || x == game->map_width - 1 || y == 0
 					|| y == game->map_height - 1)
 					exit_and_print(1, PLAYER_ERROR);
-<<<<<<< HEAD
 				if (tex_col->p++)
 					exit_and_print(1, PLAYER_ERROR);
-=======
 				set_player_dir(game, game->two_d_map[y][x]);
->>>>>>> ab1caa016fe44bfc7a6630f40b3295c9d7e738b5
 				game->x_pos = x * game->block_size + game->block_size / 2 - 5;
 				game->y_pos = y * game->block_size + game->block_size / 2 - 5;
 			}

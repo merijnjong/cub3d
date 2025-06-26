@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/16 16:33:29 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 16:36:50 by mjong            ###   ########.fr       */
+/*   Updated: 2025/06/26 16:53:39 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -130,7 +130,7 @@ void	count_map_dimensions(t_game *game, t_tex_col *tex_col)
 	find_and_validate_player(game, tex_col);
 	flood_fill(game,
 		game->x_pos / game->block_size, game->y_pos / game->block_size);
-	if (game->invalid_map == 1 || has_vertical_spike(game)
-		|| has_horizontal_spike(game))
+	if (validate_map_chars(game) || game->invalid_map == 1
+		|| has_vertical_spike(game) || has_horizontal_spike(game))
 		exit_and_print(1, FLOOD_FILL_ERROR);
 }

@@ -6,11 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2025/06/26 16:37:19 by mjong            ###   ########.fr       */
-=======
-/*   Updated: 2025/06/26 16:29:40 by dkros            ###   ########.fr       */
->>>>>>> ab1caa016fe44bfc7a6630f40b3295c9d7e738b5
+/*   Updated: 2025/06/26 16:54:08 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,6 +162,7 @@ int			has_internal_empty_line(char *str);
 int			cub_check(char *line);
 void		find_and_validate_player(t_game *game, t_tex_col *tex_col);
 int			count_lines(char **map);
+int			validate_map_chars(t_game *game);
 
 // srcs/spike_check_utils.c
 int			average_int(int *arr, int n);
