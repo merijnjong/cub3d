@@ -6,7 +6,7 @@
 /*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 16:12:31 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 17:17:59 by dkros            ###   ########.fr       */
+/*   Updated: 2025/06/26 17:37:15 by dkros            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,8 @@ void	move_player(t_game *game, double angle_rad, double angle_offset,
 	move_angle = angle_rad + angle_offset;
 	if (direction == -1)
 		move_angle += M_PI;
-	temp_x_pos = (int)(cos(move_angle) * game->walk_speed) + game->x_pos;
-	temp_y_pos = (int)(sin(move_angle) * game->walk_speed) + game->y_pos;
+	temp_x_pos = (int)((cos(move_angle) * game->walk_speed) + game->x_pos);
+	temp_y_pos = (int)((sin(move_angle) * game->walk_speed) + game->y_pos);
 	if (!coll_detection(game, temp_x_pos, temp_y_pos,
 			(game->block_size / 4 - 1)))
 	{
