@@ -1,5 +1,5 @@
 NAME    := cub3d
-CFLAGS  := -g -Wextra -Wall -Werror
+CFLAGS  := -fsanitize=address -Wextra -Wall -Werror
 LIBFT   := ./libft
 MLX     := ./MLX42
 BUILD   := $(MLX)/build
@@ -22,7 +22,7 @@ libft:
 	@$(CC) $(CFLAGS) -c $< -o $@ $(INCS) && printf "Compiling: $(notdir $<)\n"
 
 $(NAME): $(OBJS)
-	@$(CC) $(OBJS) $(LIBS) -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBS) -o $(NAME)
 
 clean:
 	@rm -rf $(OBJS)
