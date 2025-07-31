@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   game_drawing.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:11:45 by dkros             #+#    #+#             */
-/*   Updated: 2025/06/26 16:59:34 by dkros            ###   ########.fr       */
+/*   Updated: 2025/07/31 13:59:25 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,8 @@ void	draw_game_line(t_game *game, t_line_info *line)
 		if (y >= 0 && y <= SCREEN_HEIGHT)
 		{
 			my_pixel_put(game->gamefield, line->screen_x, y,
-				get_shaded_color(
-					sample_tex_color(tex, line->tex_x,
-						(y - top) * tex->height / line->wall_h),
-					line->wall_h, line->hit_vertical));
+				sample_tex_color(tex, line->tex_x,
+					(y - top) * tex->height / line->wall_h));
 		}
 		y++;
 	}
