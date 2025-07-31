@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 17:56:19 by merijnjong        #+#    #+#             */
-/*   Updated: 2025/06/26 16:52:58 by mjong            ###   ########.fr       */
+/*   Updated: 2025/07/31 13:21:00 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,13 +53,15 @@ void	assign_maps(t_game *game, char **split_tmp)
 	game->two_d_map_check = dup_map(split_tmp, game->map_height);
 }
 
-int	validate_map_chars(t_game *game)
+int	validate_map_chars(t_game *game, t_tex_col *tex_col)
 {
 	char	c;
 	int		y;
 	int		x;
 
 	y = 0;
+	if (tex_col->p == 0)
+		exit_and_print(1, PLAYER_ERROR);
 	while (game->two_d_map[y])
 	{
 		x = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: dkros <dkros@student.42.fr>                +#+  +:+       +#+        */
+/*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/09 13:23:18 by mjong             #+#    #+#             */
-/*   Updated: 2025/06/26 17:39:23 by dkros            ###   ########.fr       */
+/*   Updated: 2025/07/31 13:21:40 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ typedef struct s_tex_col
 	int	ea;
 	int	f;
 	int	c;
-	int p;
+	int	p;
 }	t_tex_col;
 
 typedef struct s_ray
@@ -84,7 +84,6 @@ typedef struct s_ray
 	int		map_x;
 	int		map_y;
 	bool	side;
-
 }	t_ray;
 
 typedef struct s_ray_input
@@ -162,7 +161,7 @@ int			has_internal_empty_line(char *str);
 int			cub_check(char *line);
 void		find_and_validate_player(t_game *game, t_tex_col *tex_col);
 int			count_lines(char **map);
-int			validate_map_chars(t_game *game);
+int			validate_map_chars(t_game *game, t_tex_col *tex_col);
 
 // srcs/spike_check_utils.c
 int			average_int(int *arr, int n);
