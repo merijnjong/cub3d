@@ -6,7 +6,7 @@
 /*   By: mjong <mjong@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/25 15:11:45 by dkros             #+#    #+#             */
-/*   Updated: 2025/07/31 13:59:25 by mjong            ###   ########.fr       */
+/*   Updated: 2025/08/07 17:15:42 by mjong            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ mlx_image_t	*choose_texture(t_game *game, bool vert,
 	if (vert == true)
 	{
 		if (dx > 0)
-			tex = game->west;
-		else
 			tex = game->east;
+		else
+			tex = game->west;
 	}
 	else
 	{
